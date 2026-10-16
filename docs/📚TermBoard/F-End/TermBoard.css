@@ -1,0 +1,4092 @@
+/* ============================================================ */
+/* # 🌑 🖥️  THE DARK BOARD */
+/* # 🔤 CSS */
+/* # 🎯 Moves the content to the top instead of the middle while the */
+/* #    board is open, so a long row of columns is never cut off the */
+/* #    screen */
+/* # 🔗 The screen file puts board-on on the body when it opens the */
+/* #    board and takes it off when it closes. The ground is the one */
+/* #    ground in shell.css: the board used to be its own shade, and the */
+/* #    step between the two screens was visible on every sign in */
+/* ============================================================ */
+body.board-on {
+  align-items: flex-start;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  padding-block: 42px 28px;
+  padding-inline: 16px;
+  box-sizing: border-box;
+}
+
+/* ============================================================ */
+/* # 🏷️ ✏️  THE NAME AT THE TOP */
+/* # 🔤 CSS */
+/* # 🎯 Keeps one height for the name spot whether it holds a button, a */
+/* #    typing box, or the finished title, so nothing jumps when they */
+/* #    swap. And it shows a text cursor on the title, which hints that */
+/* #    clicking it opens the box again */
+/* # 🔗 The button and the box take their frame from shell.css. Only */
+/* #    what is special to the board is written here */
+/* ============================================================ */
+.term {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 46px;
+}
+
+/* The name of the term is the largest thing on the page, because it is
+   what the page is about. It is held to one line where there is room
+   and allowed to shrink where there is not, rather than running off the
+   side of a phone */
+.term-title {
+  margin: 0;
+  font-size: clamp(28px, 7vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffffff;
+  text-align: center;
+  cursor: text;
+  word-break: break-word;
+}
+
+.term-input {
+  width: 260px;
+  max-width: 100%;
+  text-align: center;
+}
+
+/* ============================================================ */
+/* # 🧱 🗃️  THE ROW OF COURSE CARDS */
+/* # 🔤 CSS */
+/* # 🎯 Cards of one width, laid in a centred row that wraps, and all */
+/* #    aligned to their tops because courses differ in how many */
+/* #    chapters they hold */
+/* # 🔗 Centring is what keeps the margin on the right equal to the one */
+/* #    on the left: five fixed columns put three courses in the first */
+/* #    three and left the whole right side blank, so the board looked */
+/* #    pushed against its own edge. The widths are set on the children */
+/* #    and not on tracks, because the row holds one thing that is not a */
+/* #    card — the tile that adds one — and a track would have given it */
+/* #    the width of a card and stranded it in its own empty space. The */
+/* #    top alignment is deliberate too: forcing equal heights would pad */
+/* #    short courses with empty room that says nothing */
+/* ============================================================ */
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+/* ============================================================ */
+/* # ➕ 🟦  THE TILE THAT ADDS A COURSE */
+/* # 🔤 CSS */
+/* # 🎯 A square with a plus in it, standing in the row after the last */
+/* #    card */
+/* # 🔗 It was a wide button floating over the row, wearing the white */
+/* #    frame the sign in screens use: on a near black board beside */
+/* #    dense dark cards it was the loudest thing on the page, and it is */
+/* #    not the most important. Here it is quiet, and it stands where */
+/* #    the course it adds will stand. It keeps the top of the row, */
+/* #    because the cards beside it grow and it must not drift down */
+/* ============================================================ */
+.col-new {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  font: inherit;
+  font-size: 19px;
+  line-height: 1;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--dim2);
+  cursor: pointer;
+  transition: color .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.col-new:hover:not(:disabled) {
+  background: var(--panel2);
+  border-color: var(--dim2);
+  color: #ffffff;
+}
+
+.col-new:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* The card does not clip what is inside it. It used to, so that the head
+   strip would stop at the rounded corner — and it swallowed the panel the
+   gear opens, which was there, and open, and drawn outside the card where
+   nothing can be seen. The strip rounds its own two corners instead */
+.col {
+  flex: none;
+  width: 264px;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  min-width: 0;
+}
+
+/* ============================================================ */
+/* # 🏷️ 🔽  THE HEAD OF A CARD */
+/* # 🔤 CSS */
+/* # 🎯 One strip holding everything that is true of the whole course: */
+/* #    the fold arrow, the grade, the name with its count, the three */
+/* #    shapes, and the gear for what is asked once a term */
+/* # 🔗 The whole strip is the door to the course page, not a small */
+/* #    icon on it: an icon is a twenty pixel target, and whoever misses */
+/* #    it believes the card is broken. The three things that do their */
+/* #    own work — the arrow, the grade, the gear — keep their press */
+/* ============================================================ */
+.col-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 10px;
+  background: var(--panel2);
+  border-radius: 9px 9px 0 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.col:not(.open) .col-top { border-radius: 9px; }
+
+.col-top:hover { background: #2c2d34; }
+.col.open .col-top { border-bottom: 1px solid var(--line); }
+
+.col-twist {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #2e2f36;
+  color: var(--dim);
+  cursor: pointer;
+  transition: transform .16s ease, color .16s ease, background .16s ease;
+}
+
+.col-twist:hover { background: var(--blue-dk); color: #ffffff; }
+.col.open .col-twist { transform: rotate(90deg); color: var(--ink); }
+
+/* The letter large and the number small under it, both read at a
+   glance. The colour is not decoration: it walks from green at the top
+   of the scale to red at the bottom, and the file that works out the
+   standing is the one that hands it over, so the number and its colour
+   can never drift apart */
+.col-grade {
+  flex: none;
+  min-width: 30px;
+  height: 24px;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #24252b;
+  color: var(--dim2);
+  cursor: pointer;
+}
+
+.col-grade.has {
+  border-color: var(--g);
+  color: var(--g);
+}
+
+.col-grade.has:hover { background: var(--g); color: #14151a; }
+.col.marks-on .col-grade.has { background: var(--g); border-color: var(--g); color: #14151a; }
+.col.marks-on .col-grade { background: #31323a; color: var(--ink); }
+
+.col-grade b { font-size: 11px; line-height: 11px; font-weight: 700; letter-spacing: -.2px; }
+.col-grade s { font-size: 7px; line-height: 8px; opacity: .85; text-decoration: none; }
+
+/* The name gives way, the shapes do not. A text box asks for about
+   twenty characters of room whether or not it holds them, and asking
+   first it took the whole line: the bar was squeezed to two pixels and
+   read as a stray mark. So the shapes are given a fixed width and the
+   name takes what is left — which also puts every card's bar at the
+   same place and the same length, the one thing that lets two courses
+   be compared without reading either of them */
+.col-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.col-name {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  line-height: 1.25;
+  color: #ffffff;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.col-name.unnamed { color: var(--dim2); font-weight: 400; }
+
+/* Two lines of the same quiet grey under the name: what there is, then
+   how much of it is done. Neither is loud enough to compete with the
+   name above them or the shapes beside them */
+.col-count {
+  font-size: 9.5px;
+  color: var(--dim2);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-top .trio { flex: 0 0 84px; min-width: 0; margin-inline-start: 2px; }
+
+/* ============================================================ */
+/* # ⚙️ 🗂️  THE GEAR AND WHAT IT OPENS */
+/* # 🔤 CSS */
+/* # 🎯 A small gear at the end of the strip, and the panel it opens */
+/* #    beside itself: the hours the course is worth, and removing it */
+/* # 🔗 These were a button each on the strip and a line inside the */
+/* #    marks table — three places for two things asked once a term, and */
+/* #    the two on the strip were taking enough of a short line that */
+/* #    every course name was cut. The panel is laid over the card and */
+/* #    not inside its flow, so opening it moves nothing */
+/* ============================================================ */
+.col-gear {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--dim2);
+  cursor: pointer;
+}
+
+.col-gear:hover, .col-gear.on { color: #ffffff; background: #32333b; }
+
+.col-menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% - 4px);
+  inset-inline-start: 8px;
+  width: 168px;
+  padding: 7px 8px 8px;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .45);
+  cursor: default;
+}
+
+.col-menu-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9.5px;
+  color: var(--dim);
+  margin-bottom: 7px;
+}
+
+.col-menu-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 20px;
+  box-sizing: border-box;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 0 5px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--well);
+  color: var(--ink);
+}
+
+.col-menu-name::placeholder { color: var(--dim2); }
+.col-menu-name:focus { outline: 2px solid var(--blue); outline-offset: 0; }
+.col-menu-num {
+  width: 44px;
+  height: 20px;
+  margin-inline-start: auto;
+  box-sizing: border-box;
+  font-family: var(--mono);
+  font-size: 10px;
+  text-align: center;
+  padding: 0 3px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--well);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+
+.col-menu-num::-webkit-outer-spin-button,
+.col-menu-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.col-menu-num:focus { outline: 2px solid var(--blue); outline-offset: 0; }
+
+.col-menu-do {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 9.5px;
+  padding: 5px;
+  margin-bottom: 4px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.col-menu-do:hover { color: #ffffff; border-color: var(--dim2); background: #31323a; }
+.col-menu-drop {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 9.5px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.col-menu-drop:hover { color: #ffffff; border-color: var(--dim2); background: #31323a; }
+.col-menu-drop.asking { color: var(--orange); border-color: var(--orange); background: #2e2220; }
+
+/* ============================================================ */
+/* # 📑 📏  THE CHAPTER ROWS */
+/* # 🔤 CSS */
+/* # 🎯 One tight line per chapter, read left to right: the arrow to */
+/* #    what is inside it, its place in the course, its name, how long */
+/* #    it takes, and the three shapes */
+/* # 🔗 Fixed columns, not a flexible row: the names all begin on one */
+/* #    line down the card and the shapes all end on another, so two */
+/* #    chapters are compared by where their bars reach and not by */
+/* #    reading either of them. A name too long is cut rather than */
+/* #    allowed to push the shapes out of their column. And the list */
+/* #    itself is what folds away, so a folded card is one strip */
+/* ============================================================ */
+.col-body {
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 8px 9px;
+}
+
+.col.open .col-body { display: flex; }
+
+.ch {
+  display: grid;
+  grid-template-columns: 14px 20px minmax(0, 1fr) auto 64px;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 4px;
+  border-radius: 6px;
+}
+
+.ch:hover { background: #25262c; }
+
+/* Smaller than the arrow on the card: its rank is lower, and the two
+   must not be mistaken for each other down a narrow column */
+.ch-twist {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  font: inherit;
+  font-size: 9px;
+  line-height: 1;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--dim2);
+  cursor: pointer;
+  transition: transform .14s ease, color .14s ease, background .14s ease;
+}
+
+.ch-twist:hover { color: #ffffff; background: #32333b; }
+.ch.open .ch-twist { transform: rotate(90deg); color: var(--ink); }
+
+.ch-no {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--dim2);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ch-name {
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-overflow: ellipsis;
+}
+
+.ch-name::placeholder { color: var(--dim2); }
+.ch-name:focus { outline: none; color: #ffffff; box-shadow: 0 1px 0 0 var(--blue); }
+.ch.done .ch-name { color: var(--dim); }
+
+/* Green for what is finished and orange for what is left, here and in
+   the head of the card and nowhere differently */
+.ch-hours {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1.25;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.hDone { color: var(--green); }
+.hLeft { color: var(--orange); }
+.hSep  { color: var(--dim2); }
+
+.ch .trio { flex: none; width: 64px; }
+
+/* ============================================================ */
+/* # 📂 🧾  WHAT THE ARROW OPENS */
+/* # 🔤 CSS */
+/* # 🎯 Under the line: how long the chapter is meant to take, how much */
+/* #    of that is done, a bar for the two together, the way to call it */
+/* #    finished, and the way to remove it */
+/* # 🔗 It spans the whole row because it belongs to the chapter, not */
+/* #    to any one column of it. The number boxes lose their spinner */
+/* #    arrows, which at this size would eat half of each box */
+/* ============================================================ */
+.ch-detail {
+  display: none;
+  grid-column: 1 / -1;
+  padding: 5px 4px 7px 19px;
+}
+
+.ch.open .ch-detail { display: block; }
+
+/* What is DONE of a chapter is said, not asked: it is counted from the
+   boxes ticked inside it. A box here to type a different number would
+   be a second place for one truth, and the two would part on the first
+   row ticked */
+
+/* ============================================================ */
+/* # 📑 ⏱️  THE PARTS OF A CHAPTER, UNDER ITS CARD */
+/* # 🔤 CSS */
+/* # 🎯 One line per part: its name, what it comes to, and how much of */
+/* #    it is ticked off */
+/* # 🔗 The name is the only part of the line allowed to grow, and it */
+/* #    is the only part allowed to be cut short. The time and the */
+/* #    count are three or four characters that mean nothing when */
+/* #    clipped, so they are never the thing that gives way */
+/* ============================================================ */
+.dparts { margin: 0 0 7px; display: flex; flex-direction: column; gap: 7px; }
+
+/* The name and its clock on one line, the bar on the line under it and
+   the full width of the card. Beside the name, a bar is as long as the
+   name is short — and a reading whose length depends on the length of a
+   word is not a reading */
+.dpart { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+.dphead { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+
+.dpname {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 9.5px;
+  color: var(--dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dphead .ch-hours { flex: none; font-size: 9px; }
+
+.dprail {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--well);
+  overflow: hidden;
+}
+
+.dprail i { display: block; height: 100%; background: var(--green); }
+
+.dnone { margin: 0 0 6px; font-size: 9.5px; color: var(--dim2); }
+
+/* The one thing here that cannot be undone, so it is the quietest and
+   it is last — and it is behind an arrow nobody opens by accident */
+.ch-off {
+  font-size: 9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dim2);
+  cursor: pointer;
+}
+
+.ch-off:hover { color: var(--mBad); text-decoration: underline; }
+
+/* ============================================================ */
+/* # 🗒️ 🤫  THE QUIET SAVING LINE */
+/* # 🔤 CSS */
+/* # 🎯 One small faint line under the columns that says whether the */
+/* #    work has reached the user's Drive yet */
+/* # 🔗 It keeps its height even when empty, so the buttons under it do */
+/* #    not jump up and down as the words come and go */
+/* ============================================================ */
+/* ============================================================ */
+/* # 💯 📋  THE TABLE OF MARKS, BEHIND THE GRADE */
+/* # 🔤 CSS */
+/* # 🎯 Seven columns under the card: what the item is, its raw score, */
+/* #    what that earns of the course, its weight, its own letter, when */
+/* #    it is due, and what has to be read or done for it */
+/* # 🔗 The table is wider than the card on purpose and slides inside */
+/* #    it. Squeezing seven columns into 246 pixels leaves 40 for the */
+/* #    name — "Homework 3" becomes "Home…" — and the card cannot widen */
+/* #    because the row of cards cannot. So the content takes its own */
+/* #    width and a thin bar slides it. What is below the table stays */
+/* #    outside the sliding part, or the totals would slide away too */
+/* ============================================================ */
+.marks {
+  display: none;
+  padding: 8px 8px 10px;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 9px 9px;
+  background: #1e1f24;
+}
+
+.col.marks-on .marks { display: block; }
+
+.asTable {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #4a4d57 transparent;
+}
+
+.asTable::-webkit-scrollbar { height: 7px; }
+.asTable::-webkit-scrollbar-track { background: transparent; }
+.asTable::-webkit-scrollbar-thumb { background: #4a4d57; border-radius: 4px; }
+.asTable::-webkit-scrollbar-thumb:hover { background: #5d6170; }
+
+/* The heading row shares the grid AND the side padding of an item row.
+   Give them different padding and every heading sits a few pixels off
+   the column it names, which is exactly how far wrong it looks */
+.asLegend, .asItem {
+  display: grid;
+  align-items: center;
+  gap: 4px;
+  grid-template-columns: minmax(64px, 1fr) 62px 34px 36px 30px 98px 96px 18px;
+  min-width: 462px;
+  padding-inline: 4px;
+}
+
+.asLegend {
+  font-size: 8px;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  color: var(--dim2);
+  padding-block: 0 5px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+
+.lgL { text-align: left; }
+.lgC { text-align: center; }
+.lgR { text-align: right; }
+
+.asItem { padding-block: 3px; border-radius: 5px; }
+.asItem:hover { background: #26272d; }
+
+/* One height for every field. Text, number and date each have a height
+   of their own, so without one being set they sit at different levels
+   and the row stops reading as a row */
+.asIn {
+  width: 100%;
+  height: 21px;
+  min-width: 0;
+  box-sizing: border-box;
+  background: var(--well);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 4px;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 19px;
+}
+
+.asIn:focus { outline: 2px solid var(--blue); outline-offset: 0; }
+.asIn::placeholder { color: var(--dim2); }
+
+.asName { font-size: 10.5px; padding: 0 5px; text-align: center; }
+
+.asNum {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding: 0 3px;
+  -moz-appearance: textfield;
+}
+
+.asNum::-webkit-outer-spin-button,
+.asNum::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* The two halves of a score, with a fixed gap between them, so the
+   numbers line up column under column down the table */
+.asG {
+  display: grid;
+  grid-template-columns: 1fr 4px 1fr;
+  align-items: center;
+  gap: 1px;
+  min-width: 0;
+}
+
+.asG.asOdd .asIn { border-color: var(--orange); }
+.asUnit { color: var(--dim2); font-size: 9px; text-align: center; line-height: 21px; }
+
+.asEarned {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 21px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Full marks assumed, not recorded: the number is in the sum, but it is
+   faint so it is never mistaken for a mark you were given */
+.asEarned.asAssumed { color: var(--dim2); font-weight: 400; }
+
+.asGrade {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 21px;
+  color: var(--g, var(--dim2));
+}
+
+.asDue { color-scheme: dark; font-size: 8.5px; padding: 0 1px; }
+.asDue::-webkit-calendar-picker-indicator { margin: 0; padding: 0; opacity: .55; }
+
+/* What an item needs is chosen, not typed, so this is a button that
+   says the choice and opens the list. Faint when nothing is chosen —
+   an empty thing should not look like a filled one */
+.asMat {
+  width: 100%;
+  height: 21px;
+  box-sizing: border-box;
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--well);
+  color: var(--ink);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.asMat:hover { border-color: var(--dim2); color: #ffffff; }
+.asMat.matNone { color: var(--dim2); }
+
+/* ============================================================ */
+/* # 📚 ☑️  THE LIST OF WHAT AN ITEM NEEDS */
+/* # 🔤 CSS */
+/* # 🎯 The course's own chapters, each one tickable, floating over the */
+/* #    page beside the cell that opened it */
+/* # 🔗 Fixed to the page and placed by measured coordinates, because */
+/* #    the table it belongs to slides sideways inside the card: drawn */
+/* #    inside it, this list would be cut off at the card's edge */
+/* ============================================================ */
+.matPop {
+  position: fixed;
+  z-index: 20;
+  width: 212px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 6px;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .5);
+  scrollbar-width: thin;
+  scrollbar-color: #4a4d57 transparent;
+}
+
+.matRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.matRow:hover { background: #31323a; }
+
+.matTick {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+.matNo {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--dim2);
+  width: 20px;
+}
+
+.matName {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.matNoneYet {
+  margin: 0;
+  padding: 4px;
+  font-size: 9.5px;
+  line-height: 1.5;
+  color: var(--dim2);
+}
+
+/* A due date gone by with no score entered. The row says it, not a
+   note somewhere else, because this is a thing about this row */
+.asItem.asLate { background: #2e2220; }
+.asItem.asLate .asDue { border-color: #8a4a3f; color: #f0c8c2; }
+
+.asDel {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0 auto;
+  display: block;
+  font: inherit;
+  font-size: 9px;
+  line-height: 14px;
+  background: transparent;
+  color: var(--dim2);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.asDel:hover { background: #5a3a38; color: #ffffff; }
+
+.asEmpty {
+  font-size: 9.5px;
+  color: var(--dim2);
+  padding: 6px 4px;
+}
+
+/* ============================================================ */
+/* # 🎓 🟩  THE TERM AVERAGE, UNDER THE NAME */
+/* # 🔤 CSS */
+/* # 🎯 A large number and four blocks beside it, each block one whole */
+/* #    point of the four */
+/* # 🔗 The blocks are what say "out of four", so the number does not */
+/* #    have to: the measure is seen before it is read. The words under */
+/* #    them say it once in letters, small, for whoever wants it said. */
+/* #    No frame around any of it — this is the head of the page, not */
+/* #    one of its cards */
+/* ============================================================ */
+.term-gpa {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin: -4px 0 0;
+  line-height: 1;
+  min-height: 34px;
+}
+
+.term-gpa .gpaVal {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--g, var(--ink));
+}
+
+.term-gpa .gpaSide { display: flex; flex-direction: column; gap: 5px; }
+.term-gpa .gpaBars { display: flex; gap: 4px; }
+
+.term-gpa .gpaSeg {
+  width: 26px;
+  height: 13px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #2a2b31;
+  border: 1px solid #33343b;
+  box-sizing: border-box;
+}
+
+.term-gpa .gpaSeg i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--g, var(--dim));
+  transition: width .18s;
+}
+
+.term-gpa .gpaOf {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: var(--dim2);
+}
+/* ============================================================ */
+/* # 🔲 📊  THE THREE SHAPES */
+/* # 🔤 CSS */
+/* # 🎯 Square, bar and disc side by side at three sizes. The square */
+/* #    fills from the bottom, the bar from the start of the line, and */
+/* #    the disc is drawn as SVG by the script */
+/* # 🔗 The three colours of the disc are named once here and used by */
+/* #    the drawing, so a colour is never written twice in two places */
+/* ============================================================ */
+:root {
+  --mOk: hsl(130, 58%, 44%);
+  --mBad: hsl(0, 58%, 44%);
+  --mNone: #3a3b42;
+}
+
+.trio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* An empty shape must still look like a shape. With nothing finished
+   yet all three are empty, and a hairline outline on a dark page reads
+   as nothing at all — which is how the trio came to look like one lone
+   bar. So each of the three carries its own floor: a sunken well and a
+   line around it, and what fills from there is the reading. */
+.trio .sq {
+  position: relative;
+  display: inline-block;
+  background: var(--well);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* It fills from the bottom up: a vessel being filled, not a bar
+   crossing the page. The grey is its own colour on purpose — "it has
+   been made" is not "it has been done" and not "it was right" */
+.trio .sq i {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  background: var(--ready);
+}
+
+.trio .tbar {
+  position: relative;
+  display: inline-block;
+  background: var(--well);
+  border: 1px solid #2c2d33;
+  border-radius: 999px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.trio .tbar i {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  background: linear-gradient(90deg, var(--blue-dk), var(--blue));
+}
+
+/* A ring, like the one at the head of the page: a grey track all the
+   way round for what has not been judged, with what was earned and what
+   was lost laid on it. One language for "how much of a whole", learned
+   once and read everywhere */
+.trio .dot {
+  display: inline-flex;
+  border-radius: 50%;
+}
+
+.trio.md { gap: 6px; }
+.trio.md .sq { width: 14px; height: 14px; }
+.trio.md .tbar { flex: 1 1 auto; min-width: 0; height: 9px; }
+.trio.md .dot { width: 14px; height: 14px; }
+
+.trio.sm { gap: 5px; }
+.trio.sm .sq { width: 9px; height: 9px; border-radius: 2px; }
+.trio.sm .tbar { flex: 1 1 auto; min-width: 0; height: 5px; }
+.trio.sm .dot { width: 9px; height: 9px; }
+
+.trio.lg { gap: 20px; }
+.trio.lg .sq { width: 46px; height: 46px; border-width: 2px; border-radius: 7px; }
+.trio.lg .tbar { width: 150px; height: 30px; }
+.trio.lg .dot { width: 46px; height: 46px; }
+/* ============================================================ */
+/* # 🗓️ 🟩  THE GRID OF DAYS */
+/* # 🔤 CSS */
+/* # 🎯 A column per week and a row per weekday, with the day names */
+/* #    beside it, the month over the week it starts in, and the week */
+/* #    number under the month */
+/* # 🔗 Squares outside the term keep their place and are not drawn, so */
+/* #    the weeks stay straight. A day still ahead is hollow, a day */
+/* #    missed is faint but filled — the eye must tell them apart */
+/* ============================================================ */
+.days {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.days-when {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* One date to a line: From on top, To under it. And the two words are
+   given one width between them, so the boxes start at the same place
+   and the pair reads as a range rather than two unrelated fields. */
+.days-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.days-label {
+  display: grid;
+  grid-template-columns: 42px auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.days-date {
+  font-size: 0.8rem;
+  padding: 6px 8px;
+  color-scheme: dark;
+}
+
+.days-grid { max-width: 100%; overflow-x: auto; }
+
+.days-body { display: flex; gap: 6px; align-items: flex-end; }
+
+.day-names {
+  display: grid;
+  grid-template-rows: repeat(7, 13px);
+  gap: 3px;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.45);
+  align-items: center;
+  text-align: start;
+}
+
+.days-stack { display: flex; flex-direction: column; gap: 2px; }
+
+.day-months, .day-weeks {
+  display: grid;
+  gap: 3px;
+  font-size: 0.58rem;
+  color: rgba(255, 255, 255, 0.42);
+  text-align: center;
+}
+
+.day-cells {
+  display: grid;
+  grid-template-rows: repeat(7, 13px);
+  gap: 3px;
+}
+
+.day {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+}
+
+/* A day worked is green. A day gone by with nothing on it is a plain
+   filled square. A day still ahead is a lighter square with a ring
+   drawn inside it: it must be SEEN — an invisible square reads as no
+   square at all, and the squares ahead are half the news. The ring is
+   an inset shadow, not a border, because a border would add two pixels
+   to a square whose size is fixed and push the whole grid out of line.
+   Only the days outside the term stay unseen, and they are not days. */
+.day.on { background: var(--mOk); }
+.day.miss { background: rgba(255, 255, 255, 0.16); }
+.day.ahead {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+}
+.day.today { outline: 1px solid #ffffff; outline-offset: 1px; }
+.day.pad { background: transparent; box-shadow: none; cursor: default; }
+
+/* ============================================================ */
+/* # 📖 🚪  THE COURSE PAGE */
+/* # 🔤 CSS */
+/* # 🎯 The same dark page, but one course wide: a name across the */
+/* #    middle, the shapes under it at their largest, and chapter rows */
+/* #    wide enough to read a real title */
+/* # 🔗 It borrows the board's own frame, so opening a course does not */
+/* #    feel like landing in a different site */
+/* ============================================================ */
+
+/* ============================================================ */
+/* # 📖 🌑  THE PAGE OF ONE COURSE: TWO STRIPS AND WHAT IS BETWEEN */
+/* # 🔤 CSS */
+/* # 🎯 A strip of chapters pinned to the top, a strip of reading */
+/* #    controls pinned to the bottom, and the chapter in hand between */
+/* #    them, scrolling on its own */
+/* # 🔗 The two strips hold still and only the middle moves, so the way */
+/* #    out and the way to another chapter are where they were a */
+/* #    minute ago however far down the page has been read. The column */
+/* #    width and the type size are set by the reader and kept as two */
+/* #    numbers on this element, which is why everything inside can be */
+/* #    written in ems and follow them without knowing they exist */
+/* ============================================================ */
+/* The page fills the window whatever the shell around it is doing: the
+   body centres what it holds, and a page of two pinned strips centred in
+   the middle of the screen is not a page */
+.course-page {
+  --read-font: 100%;
+  /* How wide the Term column is drawn on the sheet. The reader sets it,
+     and whatever it loses the meaning column gains — the sheet itself is
+     an A4 and does not move */
+  --term-col: 180px;
+  /* Scrolling stays the browser's, pinching does not. Our own pinch makes
+     the paper larger, and the browser's would blow the whole screen up
+     in pixels on top of it — two zooms from one pair of fingers. The
+     script cannot stop it alone: it lets the first few pixels of a
+     two-finger touch through, and the browser has started by then */
+  touch-action: pan-x pan-y;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-self: stretch;
+  height: 100%;
+  width: 100%;
+  background: var(--bg);
+}
+
+/* The shell's floating corner and its build mark are the board's. This
+   page pins strips to both edges, so while it is open the corner stands
+   down — the page says the same thing in its own footer — and the mark
+   steps above the footer instead of under it */
+body.reading .hud { display: none; }
+body.reading .build { bottom: 46px; }
+/* ============================================================ */
+/* # 🎚️ 🪝  THE TWO STRIPS, AND THE TABS THAT PULL THEM */
+/* # 🔤 CSS */
+/* # 🎯 A strip at each edge that can be shut away, and a small tab */
+/* #    hanging off each one that opens it again */
+/* # 🔗 THE TAB IS OUTSIDE THE STRIP, in a wrapper that holds both. */
+/* #    Put inside, it would go away with the thing it is there to */
+/* #    bring back — and the way to undo an action must never be inside */
+/* #    what that action removes. */
+/* # */
+/* #    And the arrow on it points THE WAY THE STRIP WILL GO: up on an */
+/* #    open top strip, down on a shut one. An arrow that named the */
+/* #    state instead would be read as the direction half the time */
+/* #    anyway, and then it would be read wrongly half the time */
+/* ============================================================ */
+.ctop { position: relative; flex: none; }
+
+.cbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--panel2);
+  border-bottom: 1px solid var(--line);
+  box-sizing: border-box;
+}
+
+.cpull {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 17px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-top: none;
+  background: var(--panel2);
+  color: var(--dim);
+  cursor: pointer;
+  transition: color .12s ease, background .12s ease;
+}
+
+.cpull:hover { background: #2c2d34; color: #ffffff; }
+
+.cpull svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cpull-top {
+  top: 100%;
+  left: 16px;
+  border-radius: 0 0 8px 8px;
+}
+
+.cpull-bottom {
+  bottom: 100%;
+  right: 16px;
+  border: 1px solid #3a3b40;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: #24252a;
+}
+
+.cpull-bottom:hover { background: #2e2f36; color: #ffffff; }
+
+.course-page.bar-shut .cbar { display: none; }
+.course-page.foot-shut .cfoot { display: none; }
+.course-page.foot-shut .cbody { padding-bottom: 34px; }
+
+.cbody {
+  flex: 1 1 auto;
+  min-height: 0;
+  /* Both ways, because a sheet pinched larger than the desk has to be
+     reachable sideways. It is laid to the start and centred by its own
+     margin, so there is never a strip of it hanging off the near side
+     where no scrolling goes */
+  overflow: auto;
+  /* Room at the foot for the strip that floats over it, so the last
+     sheet is never sat on — and less of it when the strip is shut away,
+     because then only its tab is down there */
+  padding: 26px 16px 76px;
+  font-size: var(--read-font);
+  /* Thin and dark, the colour of the desk. The browser's own is wide and
+     pale and pulls the eye off the paper, and it stands beside the one
+     thing on this page that is meant to be looked at */
+  scrollbar-width: thin;
+  scrollbar-color: #35363c transparent;
+}
+
+.cbody::-webkit-scrollbar { width: 10px; }
+.cbody::-webkit-scrollbar-track { background: transparent; }
+.cbody::-webkit-scrollbar-thumb { background: #35363c; border-radius: 6px; border: 2px solid transparent; background-clip: content-box; }
+.cbody::-webkit-scrollbar-thumb:hover { background: #4a4c53; background-clip: content-box; }
+
+/* ============================================================ */
+/* # 🎚️ 🫥  THE STRIP THAT PEEKS UP */
+/* # 🔤 CSS */
+/* # 🎯 Off the bottom of the screen until the pointer comes near, then */
+/* #    it slides up; and a sixteen pixel strip at the very edge is what */
+/* #    calls it */
+/* # 🔗 It floats OVER the sheets rather than sitting under them, so */
+/* #    what is being read has the whole window while it is being read. */
+/* #    Its tab is the way it is called up and sent away, and the tab */
+/* #    is always there to be seen. */
+/* # */
+/* #    It replaced a sixteen pixel strip of nothing at the very edge */
+/* #    that brought the bar up when a pointer crossed it. That worked, */
+/* #    and could be found by somebody who already knew it was there — */
+/* #    and it fought the tab: a strip shut by hand came straight back */
+/* #    because the hand that shut it was still at the bottom edge */
+/* ============================================================ */
+.cbottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 41;
+}
+
+.cfoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 16px;
+  background: #24252a;
+  border-top: 1px solid #3a3b40;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, .4);
+  box-sizing: border-box;
+}
+
+.cfoot-side { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+
+.cfoot-middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ============================================================ */
+/* # 🎛️ 🔘  THE BUTTONS, AND THE TROUGHS THEY SIT IN */
+/* # 🔤 CSS */
+/* # 🎯 A sunken group holding square buttons with no frames of their */
+/* #    own, lit by the ground under them when the pointer finds one */
+/* # 🔗 Taken whole from the reader's own pages, down to the numbers. */
+/* #    Each button used to carry its own border and its own fill, so */
+/* #    eight buttons in a strip were eight boxes shouting at once; here */
+/* #    the GROUP is the box and what is inside it is quiet until it is */
+/* #    reached for. Things that belong together sit in one trough, and */
+/* #    the trough is what says they belong together */
+/* ============================================================ */
+.cgroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #1b1c20;
+  border: 1px solid #33343a;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.cbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font: inherit;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: #c8cad0;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+
+.cbtn:hover:not(:disabled) { background: #34353c; color: #ffffff; }
+.cbtn:active:not(:disabled) { background: #3f4048; }
+
+/* A button with no possible effect is disabled AND SEEN to be disabled.
+   A press that does nothing is worse than a faded button */
+.cbtn:disabled { opacity: .34; cursor: default; background: transparent; color: #c8cad0; }
+.cbtn:disabled:hover { background: transparent; color: #c8cad0; }
+
+/* A button that is not doing a thing but IS a state — the eye while the
+   sheet is covered over — wears the ground instead of saying so */
+.cbtn.on { background: #3a6bb0; color: #ffffff; }
+.cbtn.on:hover { background: #4176c0; color: #ffffff; }
+
+.cbtn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ctxt { font-size: 12.5px; font-weight: 700; line-height: 1; letter-spacing: -.3px; }
+
+/* The quiet half of a trough: a drawing that is not a button, standing
+   beside a reading. It is dimmer than the buttons on purpose — nothing
+   happens when it is pressed, and it should not invite the press */
+.clabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 30px;
+  color: #70727a;
+  user-select: none;
+}
+
+.clabel svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================================ */
+/* # 🗂️ 📊  THE TAB OF A CHAPTER */
+/* # 🔤 CSS */
+/* # 🎯 Shut, it is a small box saying how far through the chapter you */
+/* #    are. Open, it is a container: its name, and the parts it holds */
+/* # 🔗 THE CHAPTER NEVER TURNS WHITE — the part being read does. The */
+/* #    white is for the one thing on the strip that is actually on the */
+/* #    paper, and a chapter is not on the paper: one of its parts is. */
+/* #    Lighting the chapter as well would be two things claiming to be */
+/* #    the same one thing. */
+/* # */
+/* #    And an open chapter drops its own two lines. It hands that */
+/* #    question to its parts and gets out of their way — both at once */
+/* #    is the same thing said twice at two sizes, and the whole of it */
+/* #    is only the sum of what is underneath */
+/* ============================================================ */
+.ctabs {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: #4a4d57 transparent;
+}
+
+.ctabs::-webkit-scrollbar { height: 6px; }
+.ctabs::-webkit-scrollbar-track { background: transparent; }
+.ctabs::-webkit-scrollbar-thumb { background: #4a4d57; border-radius: 4px; }
+
+/* ONE HEIGHT FOR EVERY TAB, folded or not. The height is the unfolded
+   one, so unfolding a chapter changes its width and nothing else — the
+   strip does not grow downward over the paper, and the tabs beside it
+   do not shift. The folded ones put their two lines along the bottom,
+   where the parts of an unfolded one sit, so the same reading is found
+   at the same height whichever state the tab is in */
+.ctab {
+  flex: none;
+  box-sizing: border-box;
+  width: 140px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* FOLDED, THE CONTENT IS CENTRED AS ONE BLOCK. Held apart top and
+     bottom it left a hole in the middle of every folded tab: the name
+     floating at the ceiling, the two lines on the floor, and nothing
+     between them. The leftover room is split evenly above and below
+     instead, where it reads as margin and not as a gap */
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 11px 9px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #2c2d31;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ctab:hover { background: #34353b; }
+
+/* The chapter being read says so even folded, since the white part that
+   says it is inside: a white name and a lighter edge */
+.ctab.on { border-color: #70727c; }
+.ctab.on .ctab-name { color: #ffffff; }
+
+/* Unfolded, it is a frame round its parts: a little darker than the
+   folded ones and as wide as what it holds, so the eye reads it as the
+   thing those boxes are inside rather than as another box beside them */
+/* Unfolded it wears a BLUE FRAME — the one accent this site already
+   uses for the thing in hand. The darker ground alone said "a frame
+   round something" but not "and this is the one you are in", and that
+   is the thing a reader looks for first when they glance up.
+   Its head sits at the top and its parts under it, so the room left
+   over falls BELOW them as a margin rather than being shared out */
+.ctab.wide {
+  width: auto;
+  justify-content: flex-start;
+  background: #212226;
+  border-color: #5a8fd8;
+  box-shadow: 0 0 0 1px rgba(90, 143, 216, .35);
+}
+
+.ctab.wide:hover { background: #26272c; }
+
+.ctab-head { display: flex; align-items: baseline; gap: 5px; min-width: 0; }
+
+.ctab-no {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 9px;
+  opacity: .62;
+}
+
+/* AS WIDE AS THE WORD AND NO WIDER. It used to take the whole head, so
+   a press anywhere along the top of a tab landed on the name and opened
+   it for renaming — the reader was asking for the chapter and getting
+   a typing box. It shrinks when the room runs out but never grows */
+.ctab-name {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ctab.on .ctab-name:hover { text-decoration: underline; }
+
+/* Small, beside the chapter's own name. It adds a part TO THIS CHAPTER,
+   and a plus standing at the end of the row of parts was read as one
+   more part — the one thing it is not */
+.ctab-addpart {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  border: 1px solid #55565e;
+  border-radius: 4px;
+  background: transparent;
+  color: #9a9ba3;
+  cursor: pointer;
+}
+
+.ctab-addpart:hover { background: rgba(255, 255, 255, .12); color: #ffffff; border-color: #9a9ba3; }
+
+/* The name turns into the box that changes it, in its own place and at
+   its own size — so nothing on the strip moves while it is being typed */
+.ctab-rename {
+  flex: 1 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 19px;
+  padding: 0 4px;
+  font: inherit;
+  font-size: 12px;
+  border: 1px solid var(--blue);
+  border-radius: 4px;
+  background: #ffffff;
+  color: #111111;
+}
+
+/* ============================================================ */
+/* # 📈 📉  THE TWO LINES */
+/* # 🔤 CSS */
+/* # 🎯 A rail with a filled part and a reading beside it, drawn the */
+/* #    same way wherever it appears */
+/* # 🔗 Two questions and not one: how much of it is DONE, and how much */
+/* #    of it is KNOWN. On a shut chapter that is its hours and its */
+/* #    ticks; on a part it is rows written and rows learnt. The same */
+/* #    two colours mean the same two things at both sizes */
+/* ============================================================ */
+/* The two lines sit closer to each other than either sits to the name,
+   because they are one reading in two parts and the name is a different
+   thing. Spaced the same as everything else they read as three
+   unrelated rows stacked up */
+.ctab-lines { display: flex; flex-direction: column; gap: 3px; }
+
+/* Centred in the box, not pushed against its near edge. The rail and
+   the reading are one group of a fixed size, and whatever room is left
+   over is split evenly either side of it — a group laid against the
+   start leaves the whole of the slack as a blank margin at the end,
+   which reads as a box drawn too wide rather than as a reading */
+.ctab-line { display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+/* Half the line and no more. Run the full width of the box, a four
+   pixel rail becomes a rule across the strip — six of them stacked read
+   as ruled paper rather than as six readings. Half is still long enough
+   to show a tenth, and it leaves the room the number needs */
+.ctab-bar {
+  flex: 0 0 50%;
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .18);
+  overflow: hidden;
+}
+
+.ctab-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  transition: width .25s ease;
+}
+
+/* The first line is BLUE and not green, though it is the line that
+   fills as you tick rows off. Green on both lines would be one colour
+   meaning two things a row apart: how much you have gone through, and
+   how much of it you got right. Blue is distance and green is truth */
+.ctab-bar.learnt i { background: #5a8fd8; }
+
+/* The second line carries two fills on one rail, so they lie side by
+   side rather than one over the other — and the corners are left square
+   where they meet, because a rounded join puts a seam of grey between
+   green and red that reads as a third thing */
+.ctab-bar.mix { display: flex; }
+.ctab-bar.mix i { flex: none; border-radius: 0; }
+.ctab-bar.mix i.good { background: var(--mOk); }
+.ctab-bar.mix i.bad { background: var(--mBad); }
+
+/* The reading beside a part's line. The first says how much of the part
+   you have ticked off; the second how much of what the bank ASKED you
+   got right — a different denominator on purpose, and the box says
+   which in words when you rest on it */
+/* A fixed slot, so the line with a reading and the line without one
+   hold their rails in exactly the same place */
+.ctab-count {
+  flex: 0 0 30px;
+  font-size: 9px;
+  color: #999999;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ============================================================ */
+/* # 📑 ➕  THE PARTS INSIDE A CHAPTER, AND THE TWO WAYS TO ADD */
+/* # 🔤 CSS */
+/* # 🎯 A box per part, the size of a chapter's own, each with its two */
+/* #    lines — and a plus at the end of the row */
+/* # 🔗 The part being read is the WHITE one. It is the only thing on */
+/* #    this strip that is on the paper, so it is the only thing lit. */
+/* # */
+/* #    Both pluses are drawn the same way and stand in the same place: */
+/* #    at the end of the row of the thing they add. The one that adds */
+/* #    a chapter stands after the last chapter, and the one that adds */
+/* #    a part after the last part — so the shape is learnt once and */
+/* #    used twice */
+/* ============================================================ */
+/* The parts keep their own height and do not stretch to the frame, so
+   the room left over in the tab shows as a margin under them */
+.ctab-parts {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.ctab-part {
+  flex: none;
+  width: 142px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 6px 9px 7px;
+  border: 1px solid #444;
+  border-radius: 7px;
+  background: #2c2d31;
+  color: #aaa;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ctab-part:hover { background: #34353b; }
+.ctab-part.on { background: #ffffff; color: #111111; border-color: #ffffff; cursor: default; }
+.ctab-part.on .ctab-bar { background: rgba(0, 0, 0, .15); }
+.ctab-part.on .ctab-count { color: #666666; }
+
+.ctab-part-head { display: flex; align-items: center; gap: 5px; min-width: 0; }
+
+.ctab-rename-part { height: 17px; font-size: 11px; }
+
+/* ============================================================ */
+/* # ➕ 🍴  CHOOSING WHAT TO ADD */
+/* # 🔤 CSS */
+/* # 🎯 Two choices, each saying what it IS under what it is called */
+/* # 🔗 The names alone do not carry the difference and the difference */
+/* #    is the whole of it: one is read down the page, the other asks */
+/* #    you questions and marks you. A reader who picks the wrong one */
+/* #    finds out by getting a screen they did not expect */
+/* ============================================================ */
+.cpick { width: 210px; }
+
+.cmenu .cpick-one {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 9px;
+  border-radius: 6px;
+}
+
+.cmenu .cpick-one b { font-size: 12px; color: #ffffff; }
+.cmenu .cpick-one span { font-size: 10.5px; color: var(--dim2); line-height: 1.4; }
+.cmenu .cpick-one:hover span { color: var(--dim); }
+
+.ctab-part-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* To the LEFT of the part's name, where nothing else on this strip
+   stands — so it is never taken for the plus on the chapter above it,
+   which is on the right and adds rather than sets */
+.ctab-gear {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  font: inherit;
+  font-size: 10px;
+  line-height: 1;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #8a8b93;
+  cursor: pointer;
+}
+
+.ctab-gear:hover { background: rgba(255, 255, 255, .14); color: #ffffff; }
+.ctab-part.on .ctab-gear { color: #777777; }
+.ctab-part.on .ctab-gear:hover { background: rgba(0, 0, 0, .12); color: #111111; }
+
+/* What the chapter comes to, beside its name. A dash while no part has
+   a pace set on it: nothing is a truer answer than a confident nought */
+/* Pushed to the far edge by its own margin, not by the name stretching
+   to fill the gap — the gap belongs to nobody, and a name that owns it
+   is a name that can be pressed from anywhere */
+.ctab-time {
+  flex: none;
+  margin-inline-start: auto;
+  padding-inline-start: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #9a9ba3;
+  font-variant-numeric: tabular-nums;
+}
+
+.ctab.on .ctab-time { color: #c8cad0; }
+
+/* ============================================================ */
+/* # ⏱️ ⚙️  THE PANEL THAT SETS A PART'S PACE */
+/* # 🔤 CSS */
+/* # 🎯 Two ways of reckoning, a box of minutes, and what the part */
+/* #    comes to while the reader is still choosing */
+/* # 🔗 It wears the row menu's own frame, because it is the same kind */
+/* #    of thing: a small panel that opens beside what it is about and */
+/* #    closes when the hand goes elsewhere. One shape learnt once */
+/* ============================================================ */
+.cpace { width: 236px; }
+
+.cpace-pick { display: flex; gap: 4px; margin-bottom: 8px; }
+
+.cmenu .cpace-one {
+  flex: 1 1 0;
+  width: auto;
+  text-align: center;
+  font-size: 11px;
+  padding: 6px 4px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--well);
+  color: var(--dim);
+}
+
+.cmenu .cpace-one:hover { background: #2e2f36; color: #ffffff; }
+.cmenu .cpace-one.on { background: #3a6bb0; border-color: #3a6bb0; color: #ffffff; }
+
+.cpace-unit {
+  flex: none;
+  font-size: 11px;
+  color: var(--dim2);
+  white-space: nowrap;
+}
+
+/* Two boxes on this line now — minutes and seconds — so neither is left
+   to take whatever room is going: side by side and flexible, the longer
+   word beside one of them would make it the narrower box */
+.cpace .cmenu-box { flex: 0 0 54px; }
+
+.cpace .cmenu-why { margin: 8px 0 0; }
+
+/* The one pace a bank has. It is drawn ON, in the place the choice
+   would have been, and cannot be pressed — there is nothing to choose,
+   and a reader who opens this to see how it is counted must find the
+   answer there rather than an empty space */
+.cmenu .cpace-one.only { flex: 0 1 auto; cursor: default; opacity: 1; }
+.cmenu .cpace-one.only:hover { background: #3a6bb0; color: #ffffff; }
+
+/* ============================================================ */
+/* # 🗑️ 🧩  TAKING A PART OUT */
+/* # 🔤 CSS */
+/* # 🎯 A quiet line under the pace, and the pair of answers it turns */
+/* #    into */
+/* # 🔗 It is DULL until it is hovered and red only when it is the real */
+/* #    press. A throwing-away that is red from across the room is a */
+/* #    red thing in the corner of the eye all evening, and the eye */
+/* #    stops reading it — then it is red at the moment it matters and */
+/* #    says nothing new */
+/* ============================================================ */
+.cpace-foot {
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+}
+
+.cmenu .cpace-drop {
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  padding: 6px 4px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dim2);
+}
+
+.cmenu .cpace-drop:hover:not(:disabled) { color: var(--mBad); border-color: var(--mBad); background: transparent; }
+.cmenu .cpace-drop:disabled { color: var(--dim2); opacity: .45; cursor: default; }
+
+.cpace-pair { display: flex; gap: 6px; margin-top: 8px; }
+
+.cmenu .cpace-keep {
+  flex: 1 1 0;
+  width: auto;
+  text-align: center;
+  font-size: 11px;
+  padding: 6px 4px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--well);
+  color: var(--ink);
+}
+
+.cmenu .cpace-keep:hover { background: #2e2f36; color: #ffffff; }
+
+.cmenu .cpace-drop.sure {
+  flex: 1 1 0;
+  width: auto;
+  font-weight: 700;
+  border-color: var(--mBad);
+  background: var(--mBad);
+  color: #ffffff;
+}
+
+.cmenu .cpace-drop.sure:hover { background: hsl(0, 58%, 50%); border-color: hsl(0, 58%, 50%); color: #ffffff; }
+
+/* It keeps the height of a shut tab and does not stretch to the open
+   one. Stretched, it grew every time a chapter was opened — a door that
+   changes size depending on what is behind it */
+.ctab-new {
+  flex: none;
+  align-self: flex-start;
+  height: 110px;
+  width: 34px;
+  padding: 0;
+  font: inherit;
+  font-size: 17px;
+  line-height: 1;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--dim2);
+  cursor: pointer;
+  transition: color .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.ctab-new:hover { background: var(--panel2); border-color: var(--dim2); color: #ffffff; }
+
+.ctab-none {
+  margin: 0;
+  font-size: 10px;
+  color: var(--dim2);
+  align-self: center;
+}
+
+/* ============================================================ */
+/* # 🔘 ⌨️  THE BUTTON THAT RUNS THE WHOLE WIDTH OF THE DESK */
+/* # 🔤 CSS */
+/* # 🎯 Adding a row, and trying a chapter again after it could not be */
+/* #    read: the two things pressed from under the paper, not on it */
+/* # 🔗 It is as wide as a sheet and no wider. Left to the desk it ran */
+/* #    the whole dark ground and read as a bar, not a button */
+/* ============================================================ */
+.csheet-done {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 7px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.csheet-done:hover { color: #ffffff; border-color: var(--dim2); background: #25262c; }
+.csheet-done.on { color: var(--ready); border-color: var(--ready); }
+
+/* ============================================================ */
+/* # 📄 🗒️  WHITE PAPER ON A DARK DESK */
+/* # 🔤 CSS */
+/* # 🎯 The chapter is written on sheets of white paper of real page */
+/* #    proportions, each carrying black-ruled tables, and the dark */
+/* #    ground behind them is the desk they lie on */
+/* # 🔗 Rows laid straight on the dark ground read as a list of */
+/* #    settings. On paper they read as a summary. And the paper is not */
+/* #    decoration: a sheet has an END, and an end is the only thing */
+/* #    that lets a row be told to begin a page. */
+/* # */
+/* #    Every colour inside a sheet is written here as a plain hex and */
+/* #    never as a theme token. The desk may be re-themed; the paper */
+/* #    may not — the day the theme turns light, a token-coloured */
+/* #    highlight stops being the yellow of a highlighter and the red */
+/* #    of a warning stops being red */
+/* ============================================================ */
+/* Laid to the START and centred by its own automatic margin, never by
+   align-items:center. The difference is not decoration. An element
+   WIDER than the box that centres it overflows on both sides, and the
+   scrolling only ever covers the end side — so whatever hangs off the
+   start side can NEVER be reached. The reader met this in their own
+   pages and said so: turning right showed the sheet to its edge, and
+   turning left stopped at a wall short of it. An automatic margin does
+   both jobs: it centres while there is room to share, and becomes zero
+   when there is none, so the sheet leans on the start and the whole
+   width can be scrolled to */
+.cstage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* ============================================================ */
+/* # 📐 🔒  A4 IS A FIXED SIZE */
+/* # 🔤 CSS */
+/* # 🎯 The sheet is drawn at its one real size whatever the window is, */
+/* #    and then SHRUNK to fit — the slot holds exactly the room the */
+/* #    shrunken sheet takes */
+/* # 🔗 THIS IS WHAT MAKES A PAGE A PAGE. The division into sheets is */
+/* #    measured against the sheet, so if the sheet changed with the */
+/* #    window the same chapter would break at different rows on the */
+/* #    laptop and on the phone, and "the row that begins a page" would */
+/* #    mean a different row on each. At one fixed size it breaks in the */
+/* #    same place everywhere, and the window only decides how small it */
+/* #    is drawn. Which is also why the sheet's own size must never be */
+/* #    touched in a narrow-window rule: that changes what was measured */
+/* ============================================================ */
+.cpaper-slot {
+  position: relative;
+  width: var(--pageMaxW, 800px);
+  height: calc(var(--pageMaxW, 800px) * 297 / 210);
+  flex-shrink: 0;
+  margin-inline: auto;
+}
+
+/* The height is a floor and nothing is ever hidden. The division into
+   sheets is measured, and a measurement taken before a font has
+   finished loading can be a line out; a sheet that clipped what did not
+   fit would swallow a row of the reader's own writing without a word.
+   So a sheet that was mis-measured grows a few millimetres — and the
+   code gives its slot the extra room, so the next sheet is not sat on */
+.cpaper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  transform: scale(var(--pageScale, 1));
+  box-sizing: border-box;
+  width: 800px;
+  min-height: calc(800px * 297 / 210);
+  padding: 34px 26px 46px;
+  background: #ffffff;
+  color: #141414;
+  border: 1px solid #3c3d44;
+  box-shadow: 0 3px 16px rgba(0, 0, 0, .55);
+}
+
+/* The reading and the way to add a row sit on the desk under the last
+   sheet, as wide as a sheet is drawn and no wider */
+.cdesk-foot {
+  width: var(--pageMaxW, 800px);
+  margin-inline: auto;
+}
+
+/* ============================================================ */
+/* # 🌓 📄  DARK PAPER */
+/* # 🔤 CSS */
+/* # 🎯 Turns the white sheets dark for reading at night, without */
+/* #    touching a single colour written anywhere else */
+/* # 🔗 ONE RULE INSTEAD OF A SECOND PALETTE. Inverting and then turning */
+/* #    the hue half a circle flips white to near-black and black to */
+/* #    near-white, while every colour on the sheet comes back out at */
+/* #    roughly the hue it went in at — the highlighter stays yellow, */
+/* #    red stays red, green stays green. The alternative is a dark */
+/* #    value beside every light one, every rule written twice, and the */
+/* #    day somebody adds a colour and forgets its twin it is invisible */
+/* #    on half the readers' screens. This is the reader's own trick */
+/* #    from their own pages. */
+/* # */
+/* #    It sits on the sheets alone. The menu and the mark bar are */
+/* #    pinned to the page and not to the paper, so they keep the dark */
+/* #    they already have and are not inverted into white boxes */
+/* ============================================================ */
+body.darkpaper .cpaper { filter: invert(1) hue-rotate(180deg); }
+
+/* ============================================================ */
+/* # 🔢 🪧  WHICH SHEET THE EYE IS ON */
+/* # 🔤 CSS */
+/* # 🎯 A small box floating at the top of the desk: this sheet, of how */
+/* #    many */
+/* # 🔗 Sticky, and NOT printed on the paper. A number on the sheet */
+/* #    scrolls away with the sheet it belongs to — so the one moment a */
+/* #    reader asks "where am I", mid-page and mid-scroll, is the one */
+/* #    moment there is nothing to read. */
+/* # */
+/* #    And it is kept BEHIND the top strip: the strip is what the */
+/* #    reader presses to get anywhere, and a reading must never stand */
+/* #    in front of a control. That is what the two z-indexes below are */
+/* #    for, and neither of them means anything without the other */
+/* ============================================================ */
+.cfolio {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: fit-content;
+  margin-inline: auto;
+  /* It hangs over the first sheet instead of pushing it down: a box
+     that took a line of its own would move the whole desk by its own
+     height the moment a second sheet appeared */
+  margin-bottom: -22px;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(27, 28, 31, .88);
+  backdrop-filter: blur(3px);
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+  /* It is a reading, not a control: a press meant for the sheet under
+     it must go to the sheet */
+  pointer-events: none;
+  user-select: none;
+}
+
+/* The strip wins. With no number of its own it is merely an earlier
+   sibling, and an earlier sibling loses to anything positioned later */
+.ctop { z-index: 5; }
+
+/* The measurer stands at the sheet's one REAL size and is never shrunk:
+   it is what the division into sheets is counted against, and counting
+   against a shrunken copy would make the count depend on the window
+   again. It is out of the flow entirely, not merely invisible: hidden
+   alone, it still reserved its own height and pushed the end of the
+   page below everything the reader could scroll to */
+.cprobe {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  z-index: -1;
+  visibility: hidden;
+  pointer-events: none;
+  transform: none;
+}
+
+/* ============================================================ */
+/* # 📋 ⬛  THE TABLES ON THE SHEET */
+/* # 🔤 CSS */
+/* # 🎯 A row per term — its number, the term, what it means, and the */
+/* #    box that says it is learnt — ruled in black like a printed page */
+/* # 🔗 Consecutive rows that share a table are ONE table, and a sheet */
+/* #    that fills up in the middle of one is a fact about the paper, */
+/* #    not about the summary. So the part that carries on over the fold */
+/* #    wears no header and no top rule: a break made by the page must */
+/* #    never be told apart from a break the reader asked for */
+/* ============================================================ */
+.ctbl {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid #000000;
+  margin-bottom: 14px;
+  font-size: .84em;
+  line-height: 1.55;
+}
+
+.ctbl.cont { border-top: none; }
+.ctbl.cont tr:first-child td { border-top: none; }
+
+.ctbl td, .ctbl th {
+  border: 1px solid #000000;
+  padding: 7px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ctbl th {
+  background: #c9c9c9;
+  color: #333333;
+  font-size: .76em;
+  font-weight: 700;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.ctbl td.cno {
+  position: relative;
+  text-align: center;
+  font-weight: 700;
+  background: #c9c9c9;
+  cursor: context-menu;
+}
+
+.ctbl td.cterm { background: #e2e2e2; font-weight: 700; }
+.ctbl td.cbox { text-align: center; vertical-align: middle; }
+
+/* Ruled across, the way a term outside the syllabus is ruled on the
+   reader's own sheets: there for the interest of it, not asked of you.
+   It is a stripe and not a colour because the colours on this paper all
+   mean something already, and because a stripe still reads as a stripe
+   when the sheet is turned over into the dark */
+/* The ruling is laid over whatever the box is coloured, so a term can be
+   both outside the syllabus and tinted, and still read as both */
+.ctbl td.cterm.outside {
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 9px, rgba(0, 0, 0, .085) 9px, rgba(0, 0, 0, .085) 11px);
+}
+
+/* ============================================================ */
+/* # 🙈 🧪  A CELL TURNED FACE DOWN */
+/* # 🔤 CSS */
+/* # 🎯 The words go invisible and a panel is laid over them, so the */
+/* #    reader can try to say what is under it */
+/* # 🔗 THE WORDS ARE NOT REMOVED, they are made transparent, and the */
+/* #    panel is laid on top without taking any room. The height of the */
+/* #    cell must not move by a hair: the sheets were cut against these */
+/* #    heights, so a cell that shrank when it was covered would pull */
+/* #    the last rows of every page up off their sheet — and pressing */
+/* #    the eye would silently repage the whole chapter. */
+/* # */
+/* #    The dashes say it is hiding something rather than being empty: */
+/* #    a flat grey block reads as a cell with nothing in it */
+/* ============================================================ */
+.ctbl td.cterm, .ctbl td.cdef { position: relative; cursor: pointer; }
+.ctbl td[contenteditable="true"] { cursor: text; }
+
+/* The only !important on this sheet, and it is earned. A covered cell
+   must beat EVERY other rule that colours it, and there are several:
+   a ticked row greys its words, a highlight paints its ground, red and
+   green paint the letters. Measured: the ticked-row rule and the
+   covered rule weigh exactly the same, so the later one won and a row
+   already learnt could not be covered at all. The alternative is to
+   keep this block last in the file for ever and trust that nobody adds
+   a rule under it — which is a rule nobody can see */
+/* The stripes go too while a cell is face down. The panel is laid two
+   pixels in, so anything drawn on the cell itself shows as a ruled
+   border round the cover — which reads as a mark on the cover rather
+   than as the thing it is hiding */
+.ctbl td.covered { color: transparent !important; background-image: none !important; }
+
+.ctbl td.covered * {
+  color: transparent !important;
+  background-color: transparent !important;
+  text-decoration-color: transparent !important;
+}
+
+.ctbl td.covered::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  pointer-events: none;
+  background: #e6e6e9;
+  border: 1px dashed #b6b7bd;
+  border-radius: 4px;
+}
+
+.ctbl td.cterm:empty::before,
+.ctbl td.cdef:empty::before {
+  content: attr(data-empty);
+  color: #9a9a9a;
+  font-weight: 400;
+}
+
+.ctbl td[contenteditable]:focus { outline: 2px solid #4b7bd4; outline-offset: -2px; }
+
+/* The table keeps its columns in the same order in both languages — the
+   number on the left, the box on the right — and only the words inside a
+   cell turn round. Turning the whole table would move the box a reader
+   has been pressing all evening to the other side of the sheet, which is
+   a bigger surprise than a line of Arabic starting on the right.
+
+   AND ARABIC IS SET AGAINST THE LEFT EDGE HERE, though it reads right to
+   left. The two are different things: the DIRECTION decides the order of
+   the letters and the words, which must stay right to left or the words
+   come out backwards; the ALIGNMENT decides which edge the block of
+   lines is pushed against. Set against the right, every Arabic cell in
+   the column starts at a different place from the English cell above it
+   and the eye has no line to run down. Against the left they all begin
+   where the column begins, in both languages */
+.ctbl td[dir="rtl"] { text-align: left; }
+
+/* The faint words in an empty cell are the row in the OTHER language, so
+   they are given that language's direction and kept in their own run */
+.ctbl td[data-hintdir="ltr"]:empty::before { direction: ltr; unicode-bidi: isolate; }
+.ctbl td[data-hintdir="rtl"]:empty::before { direction: rtl; unicode-bidi: isolate; }
+.ctbl tr.done td.cterm, .ctbl tr.done td.cdef { color: #6f6f6f; }
+
+/* The primary row is the row a table is built around. Two things
+   follow from naming one, and they are the whole point of it: it opens
+   its own table, so it wears the header; and the sheet is cut before
+   it, so it is read from the top of clean paper. Its mark sits on the
+   number cell because that is the column a reader already reaches for
+   to move a row */
+.ctbl tr.clead td.cno { background: #2d2d2d; color: #ffffff; }
+
+.ctbl tr.clead td.cno::after {
+  content: '\25C6';
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 7px;
+  color: #e8b64c;
+}
+
+.ctbl tr.clead td.cterm { background: #d4d4d4; }
+
+/* ============================================================ */
+/* # 🎨 🔖  A TERM COLOURED TO COME BACK TO */
+/* # 🔤 CSS */
+/* # 🎯 The reader's three colours, on the term's box and nowhere else */
+/* # 🔗 Pale enough that black type still reads on them, and written */
+/* #    after the first row's darker shade so a coloured term keeps its */
+/* #    colour on the first row of a table too */
+/* ============================================================ */
+.ctbl tr td.cterm.tint-yellow, .ctint-dot.tint-yellow { background-color: #fbe68a; }
+.ctbl tr td.cterm.tint-green,  .ctint-dot.tint-green  { background-color: #b5e3b0; }
+.ctbl tr td.cterm.tint-blue,   .ctint-dot.tint-blue   { background-color: #b3d4f5; }
+
+.cmenu .ctint-pick { display: flex; align-items: center; gap: 8px; }
+.ctint-dot {
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, .35);
+}
+
+/* Always there, and quiet. It was a cross that only appeared when the
+   pointer found the row, which on a phone is never — and a control
+   nobody can reach is a control that is not there. Faint enough that a
+   page of thirty rows is not a page of thirty gears */
+/* OUTSIDE the number and asleep. It stands in the sheet's own left
+   margin, where nothing else is drawn, and it is not inked until it is
+   asked for: a mark beside all forty rows of a sheet is forty small
+   distractions on a page whose whole point is the two columns in the
+   middle — and what it opens is wanted perhaps twice an evening.
+   The PLACE is always there and always takes a press; only the picture
+   waits. One press wakes it, the next opens its list. */
+/* The whole height of the row and the whole margin beside it, and on out
+   past the edge of the paper: on a phone the sheet is drawn at under half
+   size, and a 14px mark became a 6px one no finger could find. Now a
+   press anywhere to the left of a row is a press on that row's gear. The
+   mark itself still stands where it always did, next to the number */
+.crowgear {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: -60px;
+  width: 60px;
+  box-sizing: border-box;
+  padding-inline-end: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 10px;
+  line-height: 1;
+  color: transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* A mouse crossing the spot gets the faintest hint, so the place can be
+   found at all. A hand on a screen has no hover and needs none: there,
+   the first press is the hint */
+/* Only where there is a real pointer to hover with. On an iPhone a press
+   that makes something appear through :hover is taken as the hover and
+   NOT as a press — the first tap showed the gear and the second opened
+   it. Every hover on the paper that shows something is fenced off so */
+@media (hover: hover) { .crowgear:hover { color: #c0c0c0; } }
+.crowgear.on, .crowgear.on:hover { color: #111111; }
+
+/* The sheet is drawn inside 26px of margin, which is the room the gear
+   stands in. It hangs off the number cell, so that cell must not clip */
+.ctbl td.cno { overflow: visible; }
+
+/* Two signals live on one box and neither is allowed to overwrite the
+   other: the tick is what the reader said, and later the border will
+   be what a test said. Their disagreement — "I know this" against
+   "I was asked and got it wrong" — is the most useful thing on the
+   page, so it is drawn as two marks and not reduced to one */
+.cbx {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  position: relative;
+  border: 2px solid #999999;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.cbx.on { background: #cccccc; border-color: #888888; }
+
+.cbx.on::after {
+  content: '\2713';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777777;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ============================================================ */
+/* # 🖍️ 🎨  THE MARKS MADE ON THE PAPER */
+/* # 🔤 CSS */
+/* # 🎯 Highlighter, red, green, a blue box, and the three plain marks */
+/* # 🔗 One meaning, one colour, everywhere it appears — so a colour */
+/* #    here is a word, not an ornament, and the set is kept small */
+/* #    enough to stay remembered. These are the same five the reader */
+/* #    already uses on their own sheets */
+/* ============================================================ */
+.cpaper b { font-weight: 700; }
+.cpaper i { font-style: italic; }
+.cpaper u { text-decoration: underline; }
+/* ============================================================ */
+/* # 🎨 📄  THE COLOURS ON THE PAPER */
+/* # 🔤 CSS */
+/* # 🎯 Five grounds a word can sit on and five inks it can be written */
+/* #    in, on the paper and in the bar that puts them there */
+/* # 🔗 The first of each family keeps the name their own summaries have */
+/* #    always used — `hl` for the yellow and `pa` for the red — so */
+/* #    every page already written keeps its colours without being */
+/* #    touched by a single line of code. `bx`, the old blue box, is */
+/* #    still drawn as it was: nothing written is ever left unreadable */
+/* #    because a button stopped offering it */
+/* ============================================================ */
+.cpaper .hl { background-color: #ffff00; }
+.cpaper .hlg { background-color: #b6ff9c; }
+.cpaper .hlb { background-color: #9fd7ff; }
+.cpaper .hlp { background-color: #ffb3d1; }
+.cpaper .hlo { background-color: #ffcf8a; }
+
+.cpaper .tcb { color: #1155cc; font-weight: 700; }
+.cpaper .tco { color: #b45f06; font-weight: 700; }
+.cpaper .tcp { color: #7b1fa2; font-weight: 700; }
+.cpaper .pa { color: #cc0000; font-weight: 700; }
+.cpaper .pb { color: #38761d; font-weight: 700; }
+.cpaper .bx { background: #9fc5e8; padding: 0 2px; border-radius: 2px; }
+
+.cmark {
+  position: fixed;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #23242a;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .6);
+}
+
+.cmark-row, .cmark-pal { display: flex; gap: 2px; }
+
+/* The colours sit UNDER the tools and not along them: ten swatches in a
+   row make a panel wide enough to hide the line being worked on */
+.cmark-pal { padding-top: 3px; border-top: 1px solid var(--line); }
+
+.cmark .cmark-dab {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, .18);
+}
+
+.cmark .m-hl.on, .cmark .m-ink.on { background: #34353d; outline: 1px solid var(--dim2); }
+
+.cmark button {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.cmark button:hover { background: #34353d; }
+
+/* The swatch IS the colour — a square of the very ground or ink it puts
+   on the words. A letter or a word in its place would be a name to read
+   where a colour can simply be seen */
+.cmark .on-hl { background: #ffff00; }
+.cmark .on-hlg { background: #b6ff9c; }
+.cmark .on-hlb { background: #9fd7ff; }
+.cmark .on-hlp { background: #ffb3d1; }
+.cmark .on-hlo { background: #ffcf8a; }
+
+.cmark .in-pa { background: #cc0000; }
+.cmark .in-pb { background: #38761d; }
+.cmark .in-tcb { background: #1155cc; }
+.cmark .in-tco { background: #b45f06; }
+.cmark .in-tcp { background: #7b1fa2; }
+
+/* ============================================================ */
+/* # 🖱️ 📜  THE MENU OF A ROW */
+/* # 🔤 CSS */
+/* # 🎯 Where a row is moved, made primary, split off, or taken away */
+/* # 🔗 Its ends are DISABLED and not hidden. A menu whose items come */
+/* #    and go is a menu read again every time; a button that is there */
+/* #    and grey says "not from here" in one glance, and the next item */
+/* #    stays where the hand remembers it */
+/* ============================================================ */
+.cmenu {
+  position: fixed;
+  z-index: 60;
+  min-width: 196px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #23242a;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .6);
+}
+
+.cmenu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 12px;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.cmenu button:hover:not(:disabled) { background: #34353d; }
+.cmenu button:disabled { color: var(--dim2); cursor: default; }
+.cmenu hr { margin: 4px 2px; border: 0; border-top: 1px solid var(--line); }
+
+/* The menu turned into a question. It keeps the menu's own frame rather
+   than opening a box of its own, so the answer is given where the
+   question was asked and nothing else on the page moves */
+.cmenu.asking { width: 250px; padding: 10px; }
+
+.cmenu-ask {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* The line that says what will happen to the rows in between. It is the
+   whole difference between trading two rows and moving one, and the
+   names on the two buttons do not carry it */
+.cmenu-why {
+  margin: 0 0 8px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.cmenu-line { display: flex; align-items: center; gap: 6px; }
+
+.cmenu-box {
+  flex: 1 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 28px;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--well);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.cmenu-box:focus { outline: 2px solid var(--blue); outline-offset: 0; }
+
+/* Written with the menu in front of it on purpose. ".cmenu button" sets
+   every item in this panel to the full width, and it outweighs a bare
+   class — so the OK kept the whole line and squeezed the box it stands
+   beside down to nothing */
+.cmenu .cmenu-go {
+  flex: none;
+  width: auto;
+  padding: 0 12px;
+  height: 28px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 6px;
+  background: #3a6bb0;
+  color: #ffffff;
+}
+
+.cmenu .cmenu-go:hover { background: #4176c0; }
+
+.cmenu-bad {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--orange);
+}
+
+.cmenu-bad:empty { display: none; }
+
+.ctable-none {
+  margin: 0;
+  padding: 10px 2px;
+  font-size: .8em;
+  color: #8a8a8a;
+}
+
+.ctable-count {
+  margin: 8px 0 0;
+  font-family: var(--mono);
+  font-size: .68em;
+  color: var(--dim2);
+  text-align: right;
+}
+
+/* There is deliberately NO narrow-window rule for the sheet. One was
+   here — smaller padding under 620px — and it is the one change that
+   must never be made: the division into sheets is measured against this
+   padding at this width, so shrinking it on a phone makes every page
+   hold more than the page it was cut to be, and the last rows fall off
+   the bottom. The whole sheet is scaled down instead, which suits any
+   width and leaves what was measured exactly as it was measured */
+
+.cempty {
+  margin: 0;
+  text-align: center;
+  font-size: .85em;
+  color: var(--dim2);
+}
+
+.cnum {
+  font-size: 11px;
+  color: #8b8d94;
+  min-width: 40px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.csync {
+  font-size: 12px;
+  line-height: 1;
+  color: var(--green);
+}
+
+.csync.busy {
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--line);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: csync-turn .7s linear infinite;
+}
+
+.csync.wrong { color: var(--orange); }
+
+@keyframes csync-turn { to { transform: rotate(360deg); } }
+
+/* The shell's floating corner and its build mark are the board's. This
+   page pins a strip to the top and floats one over the bottom, so while
+   it is open the corner stands down — the page says the same thing in
+   its own footer — and the mark steps above the footer instead of
+   under it */
+body.reading .hud { display: none; }
+body.reading .build { bottom: 46px; }
+
+@media (max-width: 560px) {
+  .cbar { padding: 7px 8px; gap: 6px; }
+  .cfoot { padding: 7px 8px; gap: 8px; }
+  .ctab { width: 124px; }
+  /* The middle group gives its room away first: the three on the left
+     and the three on the right are what the hand reaches for */
+  .cfoot-middle { flex: 0 1 auto; }
+}
+
+/* ============================================================ */
+/* # 🕰️ ⭕  THE RING OF THE TERM */
+/* # 🔤 CSS */
+/* # 🎯 A ring that fills as the term goes by, with the days left */
+/* #    written in the middle of it, standing where the two date boxes */
+/* #    were before the dates were set */
+/* # 🔗 Its colour belongs to no other thing on this page: green here */
+/* #    means finished and white means done, and the term passing is */
+/* #    neither. It is a deadline, so it is given a colour of its own. */
+/* #    The arc is turned a quarter back so it starts at the top, the */
+/* #    way a clock is read, not at three o'clock where SVG starts */
+/* ============================================================ */
+.term-ring {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+/* The pencil sits inside the ring, under the two lines of text and
+   above the lower arc. It is faint until the pointer finds it, so the
+   number stays the loud thing in the middle and the way to change the
+   dates is there for whoever looks for it. */
+.ring-edit {
+  position: absolute;
+  left: 50%;
+  bottom: 13px;
+  transform: translateX(-50%);
+  font: inherit;
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+}
+
+.ring-edit:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.ring-track { stroke: rgba(255, 255, 255, 0.16); }
+
+.ring-arc {
+  stroke: #9b8cd8;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.ring-left, .ring-total {
+  font-family: ui-monospace, Consolas, monospace;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.ring-left { fill: #ffffff; font-size: 24px; font-weight: 700; }
+.ring-total { fill: rgba(255, 255, 255, 0.5); font-size: 9.5px; }
+
+/* ============================================================ */
+/* # 🔲 🧾  THE TERM'S OWN THREE SHAPES, AND ITS LINES */
+/* # 🔤 CSS */
+/* # 🎯 The trio read large between the term name and the grid of days, */
+/* #    with a few quiet lines of words under it saying the same thing */
+/* # 🔗 Words under shapes, not boxes around numbers: a box draws the */
+/* #    eye to the frame, and these are notes to be read once and left */
+/* ============================================================ */
+.term-shape {
+  display: flex;
+  justify-content: center;
+}
+
+/* ============================================================ */
+/* # 🚫 🎛️  WHAT A BANK HAS NO USE FOR */
+/* # 🔤 CSS */
+/* # 🎯 The controls that only mean something on a sheet, taken off the */
+/* #    strip while a test bank is what is open */
+/* # 🔗 The width of the Term column, covering the meanings, the zoom on */
+/* #    the sheet, the two languages, the dark paper: every one of them */
+/* #    acts on a sheet, and there is no sheet here. Left standing they */
+/* #    would be five buttons that answer a press with nothing at all, */
+/* #    which is the one thing the reader's own strip never does. What */
+/* #    stays is what still works: the sources, the size of the type, */
+/* #    the saved tick and fullscreen */
+/* ============================================================ */
+.banking .conly-paper,
+.banking #course-lang,
+.banking #course-dark { display: none; }
+
+/* ============================================================ */
+/* # 📐 📄  A SHEET TAKES NO SIZE CONTROLS                       */
+/* # 🔤 CSS                                                      */
+/* # 🎯 While a stack of law sheets is on the desk, the type and  */
+/* #    column controls are not there at all                      */
+/* # 🔗 NOT A DISABLED BUTTON, A BUTTON THAT IS NOT THERE. Every  */
+/* #    equation on these pages was composed on the understanding */
+/* #    that its bounds are the frame of its page, and the page   */
+/* #    measures itself after drawing and shrinks as one block to */
+/* #    fit. A type button would grow the letters, the frame      */
+/* #    would tighten, and the sheet would put them back in the   */
+/* #    same breath -- a press with no effect, or an effect the   */
+/* #    page undoes while you watch.                              */
+/* #                                                              */
+/* #    A framed painting is zoomed into, not enlarged. What      */
+/* #    stays is all that still means something: the language,    */
+/* #    the paper colour, the sources, fullscreen                 */
+/* ============================================================ */
+.sheeting .conly-paper,
+.sheeting #course-type,
+.sheeting #course-eye,
+.sheeting #course-all { display: none; }
+
+/* The sheets stand in the same box the summary does, and scroll in it */
+.csheets { height: 100%; overflow: auto; padding: 14px 10px 24px; }
+
+/* ============================================================ */
+/* # 🎯 🗃️  THE TEST BANK */
+/* # 🔤 CSS */
+/* # 🎯 A card per question while writing them, and one question alone */
+/* #    on the screen while answering them */
+/* # 🔗 NO PAPER AND NO SHEETS. A sheet is for something read from end */
+/* #    to end; a question is looked at alone, answered and left. The */
+/* #    cards sit on the dark ground as cards, and during a run there */
+/* #    is one thing on the screen and nothing else — because the next */
+/* #    three questions in the corner of the eye are three answers */
+/* #    half given before they are asked */
+/* ============================================================ */
+.qdesk {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qtop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.qtop-says { font-size: .82em; color: var(--dim); }
+
+.qstart {
+  flex: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 7px;
+  background: #3a6bb0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.qstart:hover:not(:disabled) { background: #4176c0; }
+.qstart:disabled { opacity: .4; cursor: default; }
+
+.qcard {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 10px 12px 11px;
+}
+
+/* Not finished, so it is not in the run. A dull edge and not a red one:
+   it is work in progress, not a mistake */
+.qcard-half { border-inline-start: 3px solid var(--mNone); }
+
+.qcard-head { display: flex; align-items: flex-start; gap: 8px; }
+
+.qcard-no {
+  flex: none;
+  font-family: var(--mono);
+  font-size: .68em;
+  color: var(--dim2);
+  padding-top: 3px;
+}
+
+.qcard-ask {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: .86em;
+  line-height: 1.6;
+  color: var(--ink);
+  outline: none;
+  word-break: break-word;
+}
+
+.qcard-ask:empty::before, .qpick-words:empty::before {
+  content: attr(data-empty);
+  color: var(--dim2);
+}
+
+.qcard-ask:focus, .qpick-words:focus { box-shadow: 0 1px 0 0 var(--blue); }
+
+.qcard-off, .qpick-off {
+  flex: none;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 3px;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+}
+
+.qcard:hover .qcard-off, .qpick:hover .qpick-off { color: var(--dim2); }
+.qcard-off:hover, .qpick-off:hover { color: var(--mBad); }
+
+.qcard-picks { display: flex; flex-direction: column; gap: 3px; margin: 8px 0 0 22px; }
+
+.qpick { display: flex; align-items: flex-start; gap: 7px; }
+
+/* The right answer is marked ON the choice. A letter typed in a box of
+   its own is a second place the truth lives: reorder the choices or
+   take one away and it points at whatever moved into that spot, with
+   nothing on the screen to say so */
+.qpick-mark {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  padding: 0;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.qpick-mark:hover { border-color: var(--mOk); }
+.qpick.right .qpick-mark { border-color: var(--mOk); background: var(--mOk); }
+
+.qpick-words {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: .82em;
+  line-height: 1.6;
+  color: var(--ink);
+  outline: none;
+  word-break: break-word;
+}
+
+.qpick.right .qpick-words { color: #ffffff; }
+
+.qcard-feet { display: flex; gap: 6px; margin: 8px 0 0 22px; }
+
+.qcard-add {
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dim2);
+  cursor: pointer;
+}
+
+.qcard-add:hover { color: #ffffff; border-color: var(--dim2); background: #25262c; }
+
+/* ============================================================ */
+/* # ▶️ 🧪  ONE QUESTION AT A TIME */
+/* # 🔤 CSS */
+/* # 🎯 The run: what is asked, what there is to choose, and how far */
+/* #    along it is */
+/* # 🔗 Nothing says which answer is right while the run is going. A */
+/* #    bank that lights the right one as you press is a bank you */
+/* #    cannot be wrong in, and a reader learns to read the lighting */
+/* #    instead of the question. It is all told at the end */
+/* ============================================================ */
+.qrun {
+  width: 100%;
+  max-width: 620px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.qrun-bar { display: flex; align-items: center; justify-content: space-between; }
+
+.qrun-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dim2);
+  font-variant-numeric: tabular-nums;
+}
+
+.qrun-stop {
+  font: inherit;
+  font-size: 11px;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.qrun-stop:hover { color: #ffffff; border-color: var(--dim2); }
+
+.qrun-ask {
+  margin: 0;
+  font-size: 1.05em;
+  line-height: 1.7;
+  color: #ffffff;
+}
+
+.qrun-picks { display: flex; flex-direction: column; gap: 7px; }
+
+.qrun-pick {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: .92em;
+  line-height: 1.6;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.qrun-pick:hover { background: #2c2d34; border-color: var(--dim2); }
+.qrun-pick.on { border-color: var(--blue); background: #26303f; color: #ffffff; }
+
+.qrun-feet { display: flex; gap: 8px; }
+
+.qrun-move {
+  flex: 1 1 0;
+  font: inherit;
+  font-size: 12px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.qrun-move:hover:not(:disabled) { color: #ffffff; border-color: var(--dim2); }
+.qrun-move:disabled { opacity: .35; cursor: default; }
+
+.qscore {
+  margin: 0;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+}
+
+.qmissed { display: flex; flex-direction: column; gap: 10px; }
+
+.qmissed-one {
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--mBad);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 10px 12px;
+}
+
+.qmissed-ask { margin: 0 0 6px; font-size: .88em; line-height: 1.6; color: #ffffff; }
+.qmissed-said { margin: 0; font-size: .8em; color: var(--mBad); }
+.qmissed-was { margin: 2px 0 0; font-size: .8em; color: var(--mOk); }
+
+/* ============================================================ */
+/* # 📖 🪟  THE SOURCES BESIDE THE SUMMARY */
+/* # 🔤 CSS */
+/* # 🎯 Three columns across the page, and three more inside the left */
+/* #    one, every width a fraction the reader sets by dragging */
+/* # 🔗 EVERY WIDTH IS A FRACTION AND NEVER A PIXEL COUNT. A book set to */
+/* #    600px on a wide screen has eaten the summary on a laptop; a book */
+/* #    set to 45% is 45% of whatever screen it is opened on. */
+/* # */
+/* #    And minmax(0, …) on every column, not a bare fraction: a grid */
+/* #    column's floor is the widest thing in it, so one long unbroken */
+/* #    word in a meaning would push the column wider than its share and */
+/* #    the handle would stop answering the drag */
+/* ============================================================ */
+.csplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  flex: 1 1 auto;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.course-page.sourcing .csplit {
+  grid-template-columns: minmax(0, var(--srcW, 45%)) var(--gripW, 10px) minmax(0, 1fr);
+}
+
+.course-page.sourcing .csrc-cols.two {
+  grid-template-columns: minmax(0, var(--tbW, 50%)) var(--gripW, 10px) minmax(0, 1fr);
+}
+
+.csrc {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 10px 0 34px 14px;
+  overflow: hidden;
+}
+
+.csrc-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.csrc-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ============================================================ */
+/* # ↔️ 🎚️  THE HANDLE */
+/* # 🔤 CSS */
+/* # 🎯 A thin strip with a line down the middle that lights when it is */
+/* #    taken hold of */
+/* # 🔗 The strip is ten pixels and the line is two. A handle exactly as */
+/* #    wide as it looks is a two pixel target, and a reader hunting a */
+/* #    two pixel target with a mouse is a reader who stops moving the */
+/* #    edge at all. touch-action:none is what hands the drag to this */
+/* #    page instead of letting the browser read it as a scroll */
+/* ============================================================ */
+.cgrip {
+  align-self: stretch;
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.cgrip::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--line);
+  border-radius: 1px;
+  transition: background .15s ease, width .15s ease;
+}
+
+.cgrip:hover::before, .cgrip.on::before { background: var(--blue); width: 3px; }
+
+/* While a handle is held, the whole page wears the arrow and nothing
+   selects. Without this the drag picks up whatever text it passes over
+   and the reader ends a resize with half the summary highlighted */
+body.cdragging { cursor: col-resize; user-select: none; }
+
+/* ============================================================ */
+/* # ➕ 🔑  THE TOP OF THE PANE */
+/* # 🔤 CSS */
+/* # 🎯 The way to add a source, and the key to what the colours on a */
+/* #    page mean */
+/* # 🔗 The key is ABOVE the books and not under them: it is read once, */
+/* #    at the start, and never again — and a thing read once belongs */
+/* #    where the eye first lands, not where it has to be hunted for */
+/* ============================================================ */
+.csrc-top {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-inline-end: 4px;
+}
+
+.csrc-add {
+  align-self: flex-start;
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 11px;
+  border: 1px dashed var(--line);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--dim2);
+  cursor: pointer;
+  transition: color .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.csrc-add:hover { color: #ffffff; border-color: var(--blue); background: var(--panel); }
+
+.csrc-keys { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 10px; color: var(--dim); }
+.csrc-key { display: inline-flex; align-items: center; gap: 5px; }
+
+.csrc-chip {
+  width: 10px;
+  height: 10px;
+  /* Said three ways, which one ought not to need. The swatch came out a
+     46px bar because a min-height from another rule in this very file
+     outranked a plain height — so the size is pinned here where the
+     shape is decided, and no rule reaching in can stretch it again */
+  min-height: 10px;
+  max-height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+  flex: none;
+}
+
+/* Prefixed, and not for tidiness. Written bare, the first of these was
+   ".term" — a name this file already gives to a box on the board that is
+   46 pixels tall — so the yellow swatch grew and the other three stayed
+   square. A modifier word with no prefix is not this block's name at
+   all: it is a name shared with the whole stylesheet */
+.csrc-chip.is-term { background: rgba(255, 230, 0, .55); outline: 1px solid #cbb600; }
+.csrc-chip.is-text { background: rgba(90, 143, 216, .45); outline: 1px solid #3a6bb0; }
+.csrc-chip.is-ask  { background: rgba(193, 77, 110, .45); outline: 1px solid #96355a; }
+
+/* Not required: a grey hatch and not a flat colour. It has to be read
+   from across the page as "this is outside the syllabus" without
+   covering the words under it or competing with the three real colours */
+.csrc-chip.is-out {
+  background: repeating-linear-gradient(135deg,
+    rgba(130, 130, 140, .55) 0 3px, rgba(130, 130, 140, .12) 3px 6px);
+  outline: 1px dotted rgba(120, 120, 130, .6);
+}
+
+.csrc-none, .csrc-saying {
+  margin: 0;
+  padding: 12px 2px;
+  font-size: .8em;
+  line-height: 1.6;
+  color: var(--dim2);
+}
+
+.csrc-saying.bad { color: var(--mBad); }
+
+/* ============================================================ */
+/* # 📊 ⬆️  THE BAR WHILE A BOOK GOES UP */
+/* # 🔤 CSS */
+/* # 🎯 A rail that fills, and a line saying what is happening */
+/* # 🔗 It is not decoration. Forty megabytes on a slow line is two */
+/* #    minutes of a page that looks stopped, and a reader who cannot */
+/* #    tell a slow upload from a dead one presses the button again — */
+/* #    and then there are two copies of the book in their Drive */
+/* ============================================================ */
+.csrc-bar { flex: 0 0 auto; margin-bottom: 10px; padding-inline-end: 4px; }
+
+.csrc-rail {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--well);
+  overflow: hidden;
+}
+
+.csrc-rail i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--blue);
+  transition: width .2s ease;
+}
+
+.csrc-says { margin: 5px 0 0; font-size: 10px; color: var(--dim); }
+.csrc-bar.bad .csrc-rail i { background: var(--mBad); }
+.csrc-bar.bad .csrc-says { color: var(--mBad); }
+
+/* ============================================================ */
+/* # 📕 🧱  ONE SOURCE, AND ITS PAGES */
+/* # 🔤 CSS */
+/* # 🎯 A head with the name and the page count, and the stack of pages */
+/* #    under it with its own scrolling */
+/* # 🔗 Each column scrolls ITSELF and not the window. Two stacks of PDF */
+/* #    pages scrolling the page would mean the book and the test bank */
+/* #    could never be held on the same line — which is the one thing */
+/* #    having both of them open is for */
+/* ============================================================ */
+.csrc-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 8px;
+  padding-inline-end: 4px;
+}
+
+.csrc-name {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: start;
+  padding: 2px 4px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #cfd2d8;
+  cursor: text;
+}
+
+.csrc-name:hover { border-color: var(--line); background: var(--panel); }
+
+.csrc-rename {
+  flex: 0 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 4px;
+  border: 1px solid var(--blue);
+  border-radius: 5px;
+  background: var(--well);
+  color: #ffffff;
+}
+
+.csrc-pages { font-size: 10px; font-weight: 600; color: var(--dim2); }
+
+.csrc-off {
+  margin-inline-start: auto;
+  flex: none;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 4px;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+}
+
+.csrc-col:hover .csrc-off { color: var(--dim2); }
+.csrc-off:hover { color: var(--mBad); }
+
+.csrc-stack {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-inline-end: 4px;
+}
+
+/* The box is given the shape of the page BEFORE anything is drawn in
+   it. With no height, six hundred pages stack on one point, every one
+   of them counts as near the screen, every one is drawn, and the tab
+   dies opening a textbook */
+.csrc-page {
+  position: relative;
+  width: 100%;
+  flex: none;
+  background: #ffffff;
+  border: 1px solid #444444;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}
+
+.csrc-page.bad { background: var(--panel); border-color: var(--mBad); }
+.csrc-canvas { display: block; width: 100%; height: auto; }
+
+/* The question panel borrowed from the part menu, so a removal is asked
+   the same way wherever it is asked */
+.cdrop { width: 250px; padding: 10px; }
+
+/* ============================================================ */
+/* # 📱 📐  WHEN THERE IS NO ROOM FOR THREE */
+/* # 🔤 CSS */
+/* # 🎯 Below 900 pixels the columns stop sharing a line and stack */
+/* # 🔗 Only while the sources are OPEN. Applied always, a reader with */
+/* #    the pane shut got the summary alone at 60vh and a dead strip of */
+/* #    background under it — the reader's own site had exactly this */
+/* #    fault, and it is written down here so it is not copied in */
+/* ============================================================ */
+@media (max-width: 900px) {
+  .course-page.sourcing .csplit { grid-template-columns: minmax(0, 1fr); }
+  .course-page.sourcing .csrc-cols.two { grid-template-columns: minmax(0, 1fr); }
+  .course-page.sourcing .cgrip { display: none; }
+  /* The summary first: it is what the page is for, and the sources are
+     earlier in the markup only because they are on the left */
+  .course-page.sourcing .cbody { order: -1; min-height: 55vh; }
+  .course-page.sourcing .csrc { min-height: 70vh; padding-inline: 14px; }
+}
+
+/* ============================================================ */
+/* # 🖍️ 📄  THE PASSAGES LIT ON A PAGE */
+/* # 🔤 CSS */
+/* # 🎯 A mark over the words a row points at, in the colour of the */
+/* #    field that points at them */
+/* # 🔗 THE SAME THREE COLOURS AS THE KEY ABOVE, and named after the */
+/* #    same three fields — term, text, ask. A legend that says one */
+/* #    thing and a page that says another is a legend nobody reads */
+/* #    twice. */
+/* # */
+/* #    They are see-through, because the words under them are the */
+/* #    point: a mark that covers what it marks has marked nothing */
+/* ============================================================ */
+.bw {
+  position: absolute;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: box-shadow .15s ease;
+}
+
+.bw.is-term { background: rgba(255, 230, 0, .45); outline: 1px solid #cbb600; }
+.bw.is-text { background: rgba(90, 143, 216, .40); outline: 1px solid #3a6bb0; }
+.bw.is-ask  { background: rgba(193, 77, 110, .40); outline: 1px solid #96355a; }
+
+/* NOT REQUIRED: a grey hatch, never a solid colour. It has to be read
+   from across the page as "this is outside the syllabus" while leaving
+   the words under it perfectly legible — it marks a stretch to be SEEN
+   and not studied, so covering it would defeat it — and it must not
+   compete with the three colours that mean something was found. It is
+   not a control either: a press goes through it to whatever is beneath */
+.bw.is-out {
+  background: repeating-linear-gradient(135deg,
+    rgba(130, 130, 140, .20) 0 3px, rgba(130, 130, 140, .05) 3px 6px);
+  outline: 1px dotted rgba(120, 120, 130, .45);
+  pointer-events: none;
+}
+
+.bw:hover { box-shadow: 0 0 0 2px rgba(255, 255, 255, .8); }
+
+/* Where the reader was just sent. It beats the three colours because it
+   answers a question they asked a second ago — and it goes out again,
+   because a mark left lit is part of the page by the next jump */
+.bw.hit {
+  background: rgba(255, 59, 48, .55) !important;
+  outline: 2px solid #ff3b30 !important;
+  z-index: 2;
+}
+
+/* ============================================================ */
+/* # 📍 📖  THE ROW THAT KNOWS WHERE IT IS */
+/* # 🔤 CSS */
+/* # 🎯 A small diamond in the margin on the other side of the number */
+/* #    from the gear */
+/* # 🔗 NOT hidden the way the gear is, and the difference is the point: */
+/* #    the gear is a way in to doing something, this is a FACT about */
+/* #    the row — that it has a place in the book — and a reader running */
+/* #    an eye down a sheet wants to see which rows have one without */
+/* #    pressing anything */
+/* ============================================================ */
+.crowsrc {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: -16px;
+  transform: translateY(-50%);
+  width: 13px;
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  line-height: 1;
+  color: #b9962a;
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (hover: hover) { .crowsrc:hover { color: #141414; } }
+
+/* The row a passage sent the reader back to. On the ROW and not on one
+   cell: they are looking for the line they marked, and the line is the
+   row. It fades for the same reason the mark on the page does */
+.ctbl tr.hit td { background: #fff59d; }
+.ctbl tr.hit td.cterm, .ctbl tr.hit td.cdef { transition: background .4s ease; }
+
+/* The dot beside each place in the little list of them, so the colour
+   says which field without a word for it */
+.cmenu-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  min-height: 9px;
+  max-height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-inline-end: 7px;
+}
+
+.cmenu-dot.is-term { background: rgba(255, 230, 0, .75); outline: 1px solid #cbb600; }
+.cmenu-dot.is-text { background: rgba(90, 143, 216, .75); outline: 1px solid #3a6bb0; }
+.cmenu-dot.is-ask  { background: rgba(193, 77, 110, .75); outline: 1px solid #96355a; }
+
+/* Scoped to the places list alone. Written as ".cmenu button" it would
+   have re-laid every item of the row menu too — a global change made to
+   serve one local need, which is how a stylesheet stops being readable */
+.cmenu .cmenu-place { display: flex; align-items: center; }
+
+/* ============================================================ */
+/* # 🚫 📖  A COLUMN SAYING "NOT HERE" */
+/* # 🔤 CSS */
+/* # 🎯 One dark beat around the column a press would have gone to */
+/* # 🔗 Inside the column and not a box over it: the answer belongs */
+/* #    where the question was asked. And it beats ONCE — a thing that */
+/* #    keeps flashing is read as broken, not as an answer */
+/* ============================================================ */
+.csrc-col.nowhere { animation: nowhereBeat .65s ease; }
+
+@keyframes nowhereBeat {
+  0%   { box-shadow: inset 0 0 0 7px rgba(0, 0, 0, 0); }
+  30%  { box-shadow: inset 0 0 0 7px rgba(0, 0, 0, .85); }
+  100% { box-shadow: inset 0 0 0 7px rgba(0, 0, 0, 0); }
+}
+
+/* The same bar the uploads use, saying something that is not progress */
+.csrc-bar.saying .csrc-rail { display: none; }
+.csrc-bar.saying .csrc-says { margin: 0; color: var(--orange); font-size: 11px; }
+
+/* ============================================================ */
+/* # 🎯 📋  THE QUESTIONS THAT ASK YOU A ROW */
+/* # 🔤 CSS */
+/* # 🎯 A fold saying how many, and the questions themselves under it */
+/* # 🔗 FOLDED, because four questions are four sentences and opened */
+/* #    flat they push the places off the bottom of the screen. The */
+/* #    COUNT is on the fold itself, so the thing wanted at a glance — */
+/* #    are there any, how many — needs no press at all */
+/* ============================================================ */
+.cmenu .cmenu-fold {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.cmenu .cmenu-fold::before {
+  content: '';
+  flex: none;
+  width: 0;
+  height: 0;
+  border-inline-start: 4px solid currentColor;
+  border-block: 3.5px solid transparent;
+  transition: transform .14s ease;
+}
+
+.cmenu .cmenu-fold.open { color: #ffffff; }
+.cmenu .cmenu-fold.open::before { transform: rotate(90deg); }
+.cmenu .cmenu-fold:hover { color: #ffffff; background: #34353d; }
+
+.cmenu-asks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 232px;
+  overflow-y: auto;
+  padding-inline-start: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #45464e transparent;
+}
+
+/* The whole question, wrapped — not one clipped line. A reader is
+   deciding whether this is the question they want, and half a sentence
+   is not enough to decide on */
+.cmenu .cmenu-ask-one {
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 5px 8px;
+  border: 0;
+  border-inline-start: 2px solid var(--line);
+  border-radius: 0 5px 5px 0;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  white-space: normal;
+}
+
+.cmenu .cmenu-ask-one:hover {
+  color: #ffffff;
+  background: #34353d;
+  border-inline-start-color: rgba(193, 77, 110, .8);
+}
+/* ============================================================ */
+/* # 🗔 📖  THE LONG EXPLANATION */
+/* # 🔤 CSS */
+/* # 🎯 A card over the sheet: its name and handles on top, and a body */
+/* #    that scrolls and scales from one root */
+/* # 🔗 EVERY SIZE INSIDE THE BODY IS A SHARE OF ITS ROOT, never a */
+/* #    pixel count. The handle moves one number — the root — and */
+/* #    anything written as a share of it moves with it for nothing. A */
+/* #    rule written in pixels stands still while the rest grows, and */
+/* #    comes out plainly wrong at the first press, which is exactly */
+/* #    the failure that should be loud rather than quiet. */
+/* # */
+/* #    The card is the paper's colours and not the strip's: it is a */
+/* #    thing to READ, and it is read next to the sheet */
+/* ============================================================ */
+.cep {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, .58);
+}
+
+.cep[hidden] { display: none; }
+
+.cep-card {
+  width: min(760px, 100%);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fcfcfd;
+  color: #1b1c20;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .55);
+}
+
+/* The dark paper is the reader's own choice about what they read, and
+   this is something they read. It is set on the BODY, which is where
+   the sheet reads it from too — one switch, both papers */
+body.darkpaper .cep-card { background: #1c1d21; color: #e9eaee; }
+body.darkpaper .cep-note { color: #9a9ca4; }
+
+.cep-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(127, 127, 127, .3);
+}
+
+.cep-title { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 17px; font-weight: 700; line-height: 1.5; }
+
+.cep-tools { flex: none; display: flex; align-items: center; gap: 4px; }
+
+.cep-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #6b6d75;
+  cursor: pointer;
+}
+
+.cep-btn:hover { background: rgba(127, 127, 127, .16); color: inherit; }
+
+.cep-btn svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7;
+               stroke-linecap: round; stroke-linejoin: round; }
+
+.cep-az { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+
+/* The sign rides the corner of the picture rather than standing beside
+   it: two full-size characters in a thirty pixel button and neither can
+   be read */
+.cep-sign {
+  position: absolute;
+  inset-inline-end: 2px;
+  bottom: 1px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.cep-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px 18px 22px;
+  font-size: calc(14px * var(--ep-scale, 1));
+  line-height: 1.8;
+  text-align: start;
+}
+
+/* The pictures take the SECOND handle and the words the first. Named
+   one by one rather than every drawing in the body: an icon inside a
+   sentence is a letter's worth of picture, and blowing it up to the
+   width of the page is not what anybody asked for */
+.cep-body img, .cep-body figure, .cep-body .cep-fig {
+  width: calc(100% * var(--ep-fig, 1));
+  max-width: 100%;
+  height: auto;
+}
+
+.cep-note {
+  margin: 0;
+  padding: .72em .86em;
+  border-radius: .58em;
+  font-size: .9em;
+  color: #6b6d75;
+  background: rgba(127, 127, 127, .1);
+  border: 1px dashed rgba(127, 127, 127, .35);
+}
+
+/* ============================================================ */
+/* # ⋯ 🔢  THE WAY IN, UNDER THE NUMBER */
+/* # 🔤 CSS */
+/* # 🎯 A small mark under the row number that opens its explanation */
+/* # 🔗 Under and not beside: the number column is one character wide, */
+/* #    and it already carries a gear in its margin and a diamond on */
+/* #    the other side. Faint until the pointer is on the row, so a */
+/* #    sheet being READ is a sheet of words and not of controls */
+/* ============================================================ */
+.crowmore {
+  display: block;
+  margin: 2px auto 0;
+  padding: 0;
+  width: 15px;
+  height: 11px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--dim2);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 9px;
+  cursor: pointer;
+  opacity: .35;
+}
+
+@media (hover: hover) {
+  tr:hover .crowmore { opacity: 1; }
+  .crowmore:hover { background: rgba(127, 127, 127, .18); color: var(--ink); }
+}
+
+/* ============================================================ */
+/* # 🌐 💤  THE LANGUAGE MARK IN A CELL'S CORNER */
+/* # 🔤 CSS */
+/* # 🎯 Invisible until it is pressed for, in the far bottom corner of */
+/* #    every cell */
+/* # 🔗 Transparent and NOT hidden, so it is still there to be pressed: */
+/* #    there is one of these in every cell of every row, and a sheet */
+/* #    that showed them all would be a page of buttons with a summary */
+/* #    somewhere behind it. The hand that knows where it is never */
+/* #    waits, and the eye that does not is never bothered */
+/* ============================================================ */
+/* RIGHT, and not "the far end". The far end of a cell is its left edge
+   the moment the cell is turned over to Arabic — so the mark jumped to
+   the other side of the box at the very press that turned it, and the
+   next press was no longer under the finger. A corner the hand can
+   learn has to be the same corner in both languages */
+.ccelllang {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  width: 16px;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: transparent;
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  /* Its own two letters read left to right whatever the cell does */
+  direction: ltr;
+}
+
+@media (hover: hover) { .ctbl td:hover .ccelllang { color: #c0c0c0; } }
+.ccelllang.on, .ccelllang.on:hover { color: #111111; background: rgba(127, 127, 127, .16); }
+
+/* The cells must be a frame for it to sit in the corner of */
+.ctbl td.cterm, .ctbl td.cdef { position: relative; }
+
+/* A covered cell shows nothing at all, its furniture included: the
+   whole point of covering is that there is nothing to read there */
+.ctbl td.covered .ccelllang { display: none; }
+
+/* ============================================================ */
+/* # ✎ 🗒️  THE WAY INTO THE READER'S OWN NOTE */
+/* # 🔤 CSS */
+/* # 🎯 Under the explanation mark, in the number column */
+/* # 🔗 It wears a dot when there is something written in it. A mark */
+/* #    that looks the same whether the note is empty or full is a mark */
+/* #    that has to be pressed to find out — on every row of the sheet */
+/* ============================================================ */
+.crownote {
+  display: block;
+  position: relative;
+  margin: 1px auto 0;
+  padding: 0;
+  width: 15px;
+  height: 11px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--dim2);
+  font-size: 9px;
+  line-height: 10px;
+  cursor: pointer;
+  opacity: .35;
+}
+
+@media (hover: hover) {
+  tr:hover .crownote { opacity: 1; }
+  .crownote:hover { background: rgba(127, 127, 127, .18); color: var(--ink); }
+}
+.crownote.has { opacity: 1; color: var(--blue); }
+
+/* ============================================================ */
+/* # 🗒️ ✍️  THE NOTE'S OWN WINDOW */
+/* # 🔤 CSS */
+/* # 🎯 The same card as the explanation, but written in: a caret, a */
+/* #    line of its own, and room for pictures */
+/* # 🔗 It wears the explanation's card on purpose — one window shape */
+/* #    learned once — and differs only where it must: this one is */
+/* #    typed in, so it says so with a caret and an empty line */
+/* ============================================================ */
+.cnote-body {
+  font-size: calc(14px * var(--note-scale, 1));
+  outline: none;
+  min-height: 9em;
+}
+
+.cnote-body:empty::before {
+  content: attr(data-empty);
+  color: var(--dim2);
+  pointer-events: none;
+}
+
+.cnote-body img {
+  /* In the line like a word, so small ones stand side by side and a space
+     typed between them shows. The width is set per picture from its size */
+  display: inline-block;
+  vertical-align: bottom;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: .3em 0;
+  border-radius: .4em;
+  cursor: pointer;
+}
+
+.cnote-body img.cnote-picked { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* There on the page at once, and faint until Drive has it */
+.cnote-body img.cnote-sending { opacity: .45; }
+
+/* The row of sizes over a picked picture. Above the note's own window */
+.cnote-sizer {
+  position: fixed;
+  z-index: 80;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: #26272d;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .45);
+}
+
+.cnote-sizer button {
+  min-width: 34px;
+  height: 28px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.cnote-sizer button.on { background: var(--blue-dk); color: #ffffff; }
+@media (hover: hover) { .cnote-sizer button:hover:not(.on) { background: #34353d; } }
+
+.cnote-coming {
+  display: inline-block;
+  padding: .2em .5em;
+  border-radius: .4em;
+  font-size: .85em;
+  color: var(--dim2);
+  background: rgba(127, 127, 127, .12);
+}
+
+.cnote-said {
+  flex: none;
+  align-self: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim2);
+}
+
+.cnote-dir { font-size: 15px; font-weight: 700; }
+
+/* ============================================================ */
+/* # 📖 ✍️  WHAT AN EXPLANATION LOOKS LIKE */
+/* # 🔤 CSS */
+/* # 🎯 The shapes a long explanation is written with: the one-line key */
+/* #    it opens on, the trap from the bank, a figure from the book, a */
+/* #    small table, and the place an interactive piece stood */
+/* # 🔗 EVERY SIZE HERE IS A SHARE OF THE BODY'S ROOT, never a pixel */
+/* #    count — the body is scaled by one number and anything written */
+/* #    as a share moves with it for nothing. The class names are the */
+/* #    reader's own, unchanged, so an explanation carried over from */
+/* #    their pages is drawn by the same names it was written with */
+/* ============================================================ */
+.cep-said { line-height: 1.85; }
+
+.cep-said p { margin: 0 0 .75em; }
+.cep-said b { font-weight: 700; }
+
+/* The one line the whole thing opens on */
+.cep-said .epKey {
+  margin: 0 0 .85em;
+  padding: .6em .8em;
+  border-radius: .5em;
+  border-inline-start: .22em solid var(--blue);
+  background: rgba(91, 141, 239, .1);
+}
+
+/* What the bank catches a reader out on */
+.cep-said .epTrap {
+  margin: .85em 0;
+  padding: .6em .8em;
+  border-radius: .5em;
+  border-inline-start: .22em solid var(--orange);
+  background: rgba(216, 151, 60, .1);
+}
+
+.cep-said figure { margin: 1em 0; }
+.cep-said figcaption { margin-top: .4em; font-size: .88em; opacity: .85; }
+.cep-said .epFigSrc {
+  display: inline-block;
+  margin-inline-end: .4em;
+  padding: .1em .45em;
+  border-radius: .35em;
+  font-size: .82em;
+  background: rgba(127, 127, 127, .18);
+}
+
+.cep-said .epPhotoRow { display: flex; flex-wrap: wrap; gap: .8em; }
+.cep-said .epPhotoRow figure { flex: 1 1 12em; margin: 0; }
+
+/* A picture whose file is no longer in Drive says so rather than
+   showing the browser's broken-image mark, which says nothing */
+.cep-said img.cep-gone { display: none; }
+.cep-said img.cep-gone + figcaption::before { content: '[the picture is not in your Drive] '; opacity: .7; }
+
+.cep-said .epTbl {
+  width: 100%;
+  margin: 1em 0;
+  border-collapse: collapse;
+  font-size: .94em;
+}
+
+.cep-said .epTbl th, .cep-said .epTbl td {
+  padding: .4em .6em;
+  border: 1px solid rgba(127, 127, 127, .35);
+  text-align: start;
+  vertical-align: top;
+}
+
+.cep-said .epTbl th { background: rgba(127, 127, 127, .14); font-weight: 700; }
+
+/* The place an interactive piece stood. Said and not silently dropped:
+   a reader who knows one was here would otherwise read the explanation
+   as having lost something */
+.cep-said .epWidget {
+  margin: 1em 0;
+  padding: .7em .9em;
+  border-radius: .5em;
+  border: 1px dashed rgba(127, 127, 127, .45);
+  font-size: .88em;
+  text-align: center;
+  opacity: .75;
+}
+
+/* ============================================================
+   WHEN THE WORK RUNS OUT -- TWO SENTENCES ABOVE THE SQUARES
+   The measured one first and the asked one under it, and the only
+   thing emphasised in either is the answer: a reader scanning this
+   is looking for a date, not for a sentence
+   ============================================================ */
+.pace { display: flex; flex-direction: column; gap: 2px; align-items: center;
+        position: relative; margin: 2px 0 10px; text-align: center; }
+.paceLine { margin: 0; font-size: 13px; color: var(--dim, #9a9ca4); line-height: 1.9; }
+.paceAsk { opacity: .82; }
+.paceDim { color: var(--dim, #9a9ca4); }
+.paceDays { color: var(--ink, #e9eaee); font-weight: 700; }
+
+.paceVal { font: inherit; font-weight: 700; color: var(--ink, #e9eaee);
+           background: #26272c; border: 1px solid #34353b; border-radius: 7px;
+           padding: 1px 8px; margin: 0 2px; cursor: pointer; }
+.paceVal:hover { border-color: #4a4c55; }
+.paceNum { cursor: default; min-width: 22px; display: inline-block; }
+
+.paceStep { font: inherit; font-weight: 700; color: var(--dim, #9a9ca4);
+            background: transparent; border: 1px solid #34353b; border-radius: 6px;
+            width: 20px; height: 20px; line-height: 1; padding: 0; cursor: pointer;
+            vertical-align: middle; }
+.paceStep:hover:not(:disabled) { color: var(--ink, #e9eaee); border-color: #4a4c55; }
+.paceStep:disabled { opacity: .35; cursor: default; }
+
+/* ============================================================
+   THE DAYS BEHIND THE AVERAGE
+   It opens over the board rather than pushing it down: pressing a
+   number to see where it came from should not move the thing you
+   pressed. And a day left out is dimmed, never removed -- what you
+   cannot see you cannot change your mind about
+   ============================================================ */
+.pacePop { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+           z-index: 40; width: min(460px, calc(100vw - 32px)); max-height: 60vh; overflow: auto;
+           background: #1c1d21; border: 1px solid #34353b; border-radius: 10px;
+           padding: 8px; text-align: start;
+           box-shadow: 0 12px 34px rgba(0,0,0,.5); }
+.pacePopHead { font-size: 12px; color: var(--dim, #9a9ca4); padding: 4px 6px 8px;
+               border-bottom: 1px solid #2a2b31; margin-bottom: 4px; }
+.paceDay { display: flex; align-items: center; gap: 8px; padding: 2px 2px; }
+.paceDayName { flex: 1; text-align: start; font: 12px/1.7 ui-monospace, Consolas, monospace;
+               color: var(--ink, #e9eaee); background: transparent; border: 0;
+               padding: 2px 4px; border-radius: 6px; cursor: pointer; }
+.paceDayName:hover { background: #26272c; }
+.paceDay.off .paceDayName { color: #6b6d75; text-decoration: line-through; }
+
+.paceBit { display: flex; align-items: center; gap: 8px; padding: 1px 2px 1px 22px; }
+.paceBitName { flex: 1; font-size: 12px; color: var(--dim, #9a9ca4); }
+.paceBitMin { font: 11px ui-monospace, Consolas, monospace; color: #6b6d75;
+              font-variant-numeric: tabular-nums; }
+.paceBit.off .paceBitName, .paceBit.off .paceBitMin { color: #55575e; text-decoration: line-through; }
+
+.paceSwitch { width: 14px; height: 14px; flex: none; padding: 0; cursor: pointer;
+              border-radius: 4px; border: 1.5px solid #4a4c55; background: transparent; }
+.paceSwitch.on { background: #2f7d4f; border-color: #2f7d4f; }
+
+@media (max-width: 520px) {
+  .paceLine { font-size: 12px; }
+}
+/* ============================================================
+   THE FIVE STEPS OF A DAY
+   The colour is MEASURED -- what was finished against what the reader
+   meant to finish, the number in the line right above this grid. Five
+   steps and not a smooth scale, because the point is a verdict read at
+   a glance: met it, nearly, half, a little, a trace.
+   The hues walk from green to red through the same olive and rust
+   their own board uses, so a grid they already know how to read reads
+   the same way here
+   ============================================================ */
+.day[data-lvl="4"] { background: #2f7d4f; }
+.day[data-lvl="3"] { background: #5f7d3a; }
+.day[data-lvl="2"] { background: #94702f; }
+.day[data-lvl="1"] { background: #9a5a2f; }
+.day[data-lvl="0"] { background: #8a3b3b; }
+
+/* ============================================================
+   AND THE TICK IS A DIFFERENT KIND OF FACT
+   The colour is what was measured; the tick is what the reader SAID --
+   "count this as a day I worked", which is a thing only they know (a
+   day of reading, of a lecture, of thinking it through). Two facts
+   drawn the same way would be one fact with two meanings, so the tick
+   is a dot in the corner and never a fill. On a day with nothing
+   measured it is the only mark, and the square carries it alone
+   ============================================================ */
+/* Only where nothing was measured: a day that WAS measured keeps the
+   colour its work earned, and the dot is added on top of it. Written
+   as `.day.on` alone this rule would sit later in the file at the same
+   weight as the five above and quietly beat all of them */
+.day.on:not([data-lvl]) { background: rgba(255, 255, 255, 0.16); }
+.day.on::after {
+  content: '';
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+}
+.day { position: relative; }
+/* ============================================================
+   MORE ROOM UNDER THE COURSE NAME
+   The hours line was being cut off ("6h18m / 91...") because the strip
+   spends its width on things that do not need it. Everything shifts
+   toward the start: a smaller fold arrow, a thinner gutter, tighter
+   gaps. Nothing is removed and nothing is made unreadable -- the room
+   comes from the spaces between
+   ============================================================ */
+.col-top { padding-inline-start: 6px; gap: 4px; }
+.col-twist { width: 15px; height: 15px; font-size: 9px; }
+.col-grade { min-width: 27px; padding: 0 3px; }
+.col-top .trio { flex: 0 0 78px; margin-inline-start: 0; }
+.col-title { min-width: 0; }
+/* and the line itself is allowed to use what it was given */
+.col-top .col-count { font-size: 9px; letter-spacing: -.1px; }
+
+/* ============================================================
+   MEASURED, OR WHAT YOU EXPECT IT TO COST
+   Beside "remove chapter", in the same quiet weight: this is a thing
+   said about the chapter, not an action taken on it, so it must not
+   shout louder than the one real action next to it
+   ============================================================ */
+.ch-hoursby { position: relative; margin-inline-start: 12px; }
+.ch-hlink { font-size: 9px; padding: 0; border: 0; background: transparent;
+            color: var(--dim2); cursor: pointer; }
+.ch-hlink:hover { color: var(--ink); text-decoration: underline; }
+.ch-hlink.guess { color: var(--orange); }
+
+.ch-hpop { position: absolute; top: calc(100% + 4px); inset-inline-start: 0; z-index: 30;
+           display: flex; flex-direction: column; gap: 2px; padding: 5px;
+           background: #1c1d21; border: 1px solid #34353b; border-radius: 8px;
+           box-shadow: 0 8px 22px rgba(0,0,0,.5); white-space: nowrap; }
+.ch-hpick { font-size: 10px; text-align: start; padding: 3px 8px; border: 0;
+            border-radius: 5px; background: transparent; color: var(--dim2); cursor: pointer; }
+.ch-hpick:hover { background: #26272c; color: var(--ink); }
+.ch-hpick.on { color: var(--ink); background: #2b2c33; }
+.ch-hnum { width: 92px; margin-top: 3px; font: inherit; font-size: 10px;
+           padding: 3px 6px; border-radius: 5px; border: 1px solid #34353b;
+           background: #16171a; color: var(--ink); }
+
+/* ============================================================
+   THE TERM'S OWN HOURS, ABOVE THE TWO FORECASTS
+   The same green and orange the cards use for the same two
+   quantities, so the eye carries one meaning between them
+   ============================================================ */
+.paceTally { margin: 0 0 2px; font-size: 13px; color: var(--dim, #9a9ca4); line-height: 1.7; }
+.paceDone { color: var(--green); font-weight: 700; }
+.paceAll  { color: var(--orange); font-weight: 700; }
+.paceOf   { color: var(--dim2, #6b6d75); }
+/* A day that has not come yet wore a white ring, which read as a thing
+   picked out rather than a thing still empty. It is simply quieter than
+   the rest now -- the absence of colour already says it */
+.day.ahead { box-shadow: none; background: rgba(255, 255, 255, 0.05); }
+
+/* The courses behind one day, under its own line */
+.paceCourse { display: flex; align-items: center; gap: 8px; padding: 2px 2px 2px 22px; }
+.paceCourseName { flex: 1; font-size: 11px; color: var(--ink, #e9eaee); font-weight: 600; }
+.paceCourseSum { font: 11px ui-monospace, Consolas, monospace; color: var(--dim, #9a9ca4);
+                 font-variant-numeric: tabular-nums; }
+.paceBit { padding-inline-start: 38px; }
+
+/* The expander sits to the START of the day, so every day's switch,
+   arrow and name line up down the list */
+.paceTwist { width: 14px; height: 14px; flex: none; padding: 0; cursor: pointer;
+             border: 0; background: transparent; color: var(--dim2, #6b6d75);
+             font-size: 9px; line-height: 1; transition: transform .12s; }
+.paceTwist:hover { color: var(--ink, #e9eaee); }
+.paceTwist.open { transform: rotate(90deg); }
+
+/* ============================================================
+   THE TERM AVERAGE IS COVERED UNTIL IT IS ASKED FOR
+   A grade is the one number on this board that a reader may not want
+   on screen in a room with other people in it. It starts hidden every
+   time the page opens -- not remembered, because a choice remembered
+   is a choice made once and then forgotten about
+   ============================================================ */
+.gpaEye { width: 22px; height: 22px; flex: none; padding: 0; cursor: pointer;
+          border: 1px solid #34353b; border-radius: 6px; background: transparent;
+          color: var(--dim2, #6b6d75); display: inline-flex; align-items: center;
+          justify-content: center; margin-inline-end: 10px; }
+.gpaEye:hover { color: var(--ink, #e9eaee); border-color: #4a4c55; }
+.gpaEye svg { width: 13px; height: 13px; fill: none; stroke: currentColor;
+              stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.term-gpa.hid .gpaVal,
+.term-gpa.hid .gpaSide { filter: blur(9px); opacity: .5; user-select: none; }
+/* ============================================================
+   THE BEST DAY AND THE WORST, UNDER THE SQUARES
+   The colours rank a day against its own goal, never against the other
+   days -- so the biggest day of the term is not the greenest and
+   cannot be found by looking. These two name it
+   ============================================================ */
+.days-line, #days-line { display: flex; justify-content: center; gap: 34px; }
+.dayPeak { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.peakWhat { font-size: 9.5px; color: var(--dim2, #6b6d75); letter-spacing: .3px; }
+.peakHours { font-family: var(--mono); font-size: 15px; font-weight: 700; line-height: 1.1; }
+.peakWhen { font-size: 9.5px; color: var(--dim2, #6b6d75); }
+.dayPeak.best .peakHours { color: var(--green); }
+.dayPeak.worst .peakHours { color: var(--orange); }
+
+/* The week behind the S */
+.weekPop { width: auto; }
+.weekRow { display: flex; align-items: center; gap: 8px; padding: 1px 4px; }
+.weekName { width: 30px; font: 11px ui-monospace, Consolas, monospace; color: var(--dim, #9a9ca4); }
+.weekNum { width: 62px; font: inherit; font-size: 11px; padding: 3px 6px;
+           border-radius: 5px; border: 1px solid #34353b; background: #16171a; color: var(--ink); }
+.weekUnit { font-size: 10px; color: var(--dim2, #6b6d75); }
+.weekBack { margin-top: 6px; width: 100%; font-size: 10px; }
