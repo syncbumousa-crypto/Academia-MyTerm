@@ -55,7 +55,41 @@ foreach ($f in $guest) {
 "guest: $($guest.Count) files, $((@($g.cls)|Sort-Object -Unique).Count) classes"
 ""
 
+# A prefix on every class closes one door and leaves another open: a
+# guest rule whose subject is a plain element - body, a, button - lands
+# on the host no matter how its classes are named. Three such rules were
+# already in the imported sheet, one of them padding the host's body.
+# So a guest rule may name a host element only when it also carries an
+# ac- hook, which makes the effect opt-in instead of automatic.
+function Get-Leaks([string]$path) {
+    $text = [IO.File]::ReadAllText($path)
+    $text = [Text.RegularExpressions.Regex]::Replace($text, '/\*.*?\*/', ' ', 'Singleline')
+    $elements = 'html','body','a','p','ul','ol','li','button','input','select','textarea',
+                'svg','img','div','span','nav','aside','main','header','footer','section',
+                'table','tr','td','th','h1','h2','h3','h4','h5','h6'
+    $found = @()
+    foreach ($m in [regex]::Matches($text, '(?m)(?:^|[}\n])\s*([^{}@\n][^{}]*?)\s*\{')) {
+        foreach ($part in $m.Groups[1].Value -split '\s*,\s*') {
+            $p = $part.Trim()
+            if (-not $p) { continue }
+            $firstWord = ($p -split '[\s>+~\[:.#]')[0].ToLower()
+            if ($elements -contains $firstWord -and $p -notmatch '\.ac-') { $found += $p }
+        }
+    }
+    return @($found | Sort-Object -Unique)
+}
+
+$leaks = @()
+foreach ($f in $guest) { $leaks += Get-Leaks $f.FullName }
+$leaks = @($leaks | Sort-Object -Unique)
+
 $bad = 0
+if ($leaks.Count) {
+    $bad += $leaks.Count
+    "FAIL  guest rules landing on host elements ($($leaks.Count)):"
+    $leaks | ForEach-Object { "        $_" }
+} else { "ok    no guest rule lands on a host element" }
+
 foreach ($k in 'cls','ids','vars') {
     $both = @(Compare-Object -ReferenceObject @($h[$k] | Sort-Object -Unique) `
                              -DifferenceObject @($g[$k] | Sort-Object -Unique) `

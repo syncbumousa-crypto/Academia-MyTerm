@@ -133,7 +133,7 @@
     /* المُمرِّرُ ههنا ‎body‎ لا الجذر — قِيس: ‎scroll(root)‎ لم يرتبط
        و‎scrollTop‎ يقع على الجسد. فيُسمَّى الجدولُ على المُمرِّر نفسِه،
        ويُطلب بالاسم من اللوح وهو ابنُه. */
-    body { scroll-timeline-name: --ac-page; scroll-timeline-axis: block; }
+    body.ac-on { scroll-timeline-name: --ac-page; scroll-timeline-axis: block; }
     .ac-sidebar {
       animation: ac-glass-dense linear both;
       animation-timeline: --ac-page;
@@ -312,8 +312,8 @@ body.ac-side-rail .ac-side-brand { gap: 0; }
 }
 html[data-ac-lang="en"] .ac-sidebar { right: auto; left: var(--ac-glass-gap); }
 /* والمحتوى يُفسح للوح وفجوته */
-body { padding-right: calc(var(--ac-side-w) + var(--ac-glass-gap) * 2); }
-html[data-ac-lang="en"] body { padding-right: 0; padding-left: calc(var(--ac-side-w) + var(--ac-glass-gap) * 2); }
+body.ac-on { padding-right: calc(var(--ac-side-w) + var(--ac-glass-gap) * 2); }
+html[data-ac-lang="en"] body.ac-on { padding-right: 0; padding-left: calc(var(--ac-side-w) + var(--ac-glass-gap) * 2); }
 /* والمطويُّ يخرج كلَّه ومعه فجوتُه */
 
 /* الصفوفُ الداخليّة لا تَبلغ الحرفَ المدوَّر: تُسحب من حافّتَي اللوح */
