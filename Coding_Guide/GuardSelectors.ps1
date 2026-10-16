@@ -26,7 +26,13 @@ function Get-Names([string]$path) {
     foreach ($m in [regex]::Matches($text, '\.([A-Za-z][\w-]*)')) {
         if ($skip -notcontains $m.Groups[1].Value.ToLower()) { $out.cls += $m.Groups[1].Value }
     }
-    foreach ($m in [regex]::Matches($text, '#([A-Za-z][\w-]*)'))  { $out.ids  += $m.Groups[1].Value }
+    # A hex colour starts with # too. #dddddd is not an id, and a guard
+    # that reports it once is a guard nobody reads the second time
+    foreach ($m in [regex]::Matches($text, '#([A-Za-z][\w-]*)')) {
+        $v = $m.Groups[1].Value
+        if ($v -match '^[0-9a-fA-F]+$' -and $v.Length -in 3,4,6,8) { continue }
+        $out.ids += $v
+    }
     foreach ($m in [regex]::Matches($text, '--([A-Za-z][\w-]*)')) { $out.vars += $m.Groups[1].Value }
     foreach ($k in @($out.Keys)) { $out[$k] = @($out[$k] | Sort-Object -Unique) }
     return $out

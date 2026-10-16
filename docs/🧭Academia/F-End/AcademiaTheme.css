@@ -1,0 +1,44 @@
+/* ============================================================
+   # 🎨 📌  THE TEN VALUES THE RAIL ASKS ITS HOST FOR
+   # 🔤 CSS
+   # 🎯 AcademiaRail.css carries no colour of its own. It names ten
+   #    things and expects the page to say what they are. This file
+   #    answers, in MyTerm's own palette, so the rail arrives looking
+   #    like it was always here instead of like a window from another
+   #    site.
+   # 🔗 The split is on purpose and it is what makes a second skin
+   #    cheap: Almaslakh is a different colour of the same rail, so it
+   #    is this file again with other values and not one line of the
+   #    rail touched. Every value below is taken from shell.css rather
+   #    than picked by eye - a rail tuned to a palette it only
+   #    resembles is the kind of wrong that is felt and never found.
+   ============================================================ */
+
+:root {
+  /* The glass tint and how much of it survives the blur. Lighter than
+     --panel (#212227) because a pane that matches the wall behind it
+     does not read as glass - it reads as a hole */
+  --ac-glass:      #2c2e34;
+  --ac-glass-ink:  #dddddd;                    /* shell.css --ink  */
+  --ac-glass-edge: rgba(255, 255, 255, .09);
+  --ac-glass-cast: rgba(0, 0, 0, .50);
+
+  /* Flat surfaces inside the rail, and the hairline around them */
+  --ac-surface:    #212227;                    /* shell.css --panel */
+  --ac-border:     #3a3b42;                    /* shell.css --line  */
+  --ac-c-ink-soft: #8d9098;                    /* shell.css --dim   */
+
+  /* The gap the page keeps between the rail and the content beside it */
+  --ac-pnl-pad: 14px;
+}
+
+/* The sheen follows the pointer. 50% is the resting place: without it
+   the highlight sits in the top-left corner until the mouse first
+   moves, which looks like a bug for exactly as long as it lasts */
+.ac-sidebar { --ac-mx: 50%; --ac-my: 50%; }
+
+/* The host page is centred flex. The rail is taken out of that flow
+   entirely and the body is padded instead, so MyTerm's own centring
+   keeps working on a narrower stage and nothing inside it moves of
+   its own accord */
+body.ac-on { min-height: 100vh; }

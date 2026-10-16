@@ -1,0 +1,71 @@
+/* ============================================================
+   # 📐 📌  THE FRAME THE GLASS WAS PAINTED ON
+   # 🔤 CSS
+   # 🎯 Where the rail sits, how wide it is, and how its rows stack.
+   #    Position, size and flow only - not one colour.
+   # 🔗 This file exists because of something only found by running it.
+   #    AcademiaRail.css was never a whole component: in Academia it
+   #    was a coat of paint laid over styles.css, and the frame - fixed
+   #    position, column flow, width, row height - lived in those
+   #    15,843 lines we refused to bring. Imported alone it rendered as
+   #    a bag of buttons wrapping across the middle of the page.
+   #    So the frame is written here, forty lines of it, instead of
+   #    importing a stylesheet forty times the size of the thing we
+   #    actually wanted. Three files, three jobs: the paint, the frame,
+   #    the ten values.
+   ============================================================ */
+
+.ac-sidebar {
+  position: fixed;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  width: var(--ac-side-w, 230px);
+  padding: 14px 12px;
+  box-sizing: border-box;
+  color: var(--ac-glass-ink);
+  font-family: system-ui, "Segoe UI", sans-serif;
+}
+
+.ac-side-head { margin-bottom: 10px; }
+.ac-side-brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.ac-side-logo {
+  font-size: 17px; font-weight: 700; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+
+.ac-tabs { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+/* Rows carry no look here - AcademiaRail.css gives them the plate, the
+   rounding and the active state. What they get here is a shape that
+   does not collapse when the text is hidden in the narrow state */
+.ac-sidebar .ac-tabs button {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; min-height: var(--ac-row-h, 44px);
+  padding: 0 11px; box-sizing: border-box;
+  border: 0; background: transparent; color: inherit;
+  font: inherit; font-size: 14px; text-align: start;
+  border-radius: var(--ac-row-r, 14px);
+  cursor: pointer; min-width: 0;
+}
+.ac-tab-ic { width: 20px; height: 20px; flex: none; }
+.ac-tab-tx { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* The last group is pushed to the floor, so what is pinned down stays
+   down however many courses appear above it */
+.ac-tabs--me { margin-top: auto; }
+.ac-tabs--courses { margin-top: 12px; }
+
+/* The handle straddles the rail's edge, so it cannot be a child of a
+   box that is only 64px wide when narrow.
+   Position on the page is all this file gives it. Size, shape, where
+   it sits along the edge and what it looks like are the paint's, and
+   the paint has a reason written beside it: the handle rides at the
+   HEAD of the rail, not its middle, because the middle is somewhere
+   the eye passes and the head is where it starts. The first version
+   of this rule centred it and quietly overrode that. */
+.ac-side-handle {
+  position: fixed; z-index: 31;
+  display: grid; place-items: center;
+  cursor: pointer;
+}
